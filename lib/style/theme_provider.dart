@@ -5,12 +5,14 @@ ThemeData light = ThemeData(
     brightness: Brightness.light,
     primarySwatch: Colors.amber,
     primaryColor: Colors.blue,
+    // ignore: deprecated_member_use
     accentColor: Colors.pink,
-    scaffoldBackgroundColor: Color(0xfff1f1f1));
+    scaffoldBackgroundColor: const Color(0xfff1f1f1));
 
 ThemeData dark = ThemeData(
   brightness: Brightness.dark,
   primarySwatch: Colors.indigo,
+  // ignore: deprecated_member_use
   accentColor: Colors.pink,
 );
 
