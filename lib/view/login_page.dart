@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Inventory',
+          'Selamat datang',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             ? Container(
                 padding: const EdgeInsets.only(top: defaultPadding * 2),
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.17),
+                margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.2),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 44, 43, 43),
                   borderRadius: BorderRadius.circular(15),
@@ -76,6 +76,10 @@ class _LoginPageState extends State<LoginPage> {
                       // top: mediaQueryData.size.height * 0.01,
                     ),
                     child: ListView(children: <Widget>[
+                      _title(),
+                      const Padding(
+                        padding: EdgeInsets.only(top: defaultPadding * 2),
+                      ),
                       _inputNIK(),
                       const Padding(
                         padding: EdgeInsets.only(top: defaultPadding * 2),
@@ -89,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
             : Container(
                 padding: const EdgeInsets.only(top: defaultPadding * 2),
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.17),
+                margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
@@ -102,6 +106,10 @@ class _LoginPageState extends State<LoginPage> {
                       // top: mediaQueryData.size.height * 0.01,
                     ),
                     child: ListView(children: <Widget>[
+                      _title(),
+                      const Padding(
+                        padding: EdgeInsets.only(top: defaultPadding * 2),
+                      ),
                       _inputNIK(),
                       const Padding(
                         padding: EdgeInsets.only(top: defaultPadding * 2),
@@ -113,6 +121,16 @@ class _LoginPageState extends State<LoginPage> {
                       _loginButton(),
                     ]))),
       ),
+    );
+  }
+
+  Widget _title() {
+    return Text(
+      "Login",
+      style: Theme.of(context).textTheme.headline5?.copyWith(
+          // color: ,
+          fontWeight: FontWeight.w700,
+          fontSize: 30),
     );
   }
 
