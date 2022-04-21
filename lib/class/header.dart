@@ -158,3 +158,144 @@ class HeaderAddSparepart extends StatelessWidget {
     );
   }
 }
+
+class HeaderMekanik extends StatelessWidget {
+  const HeaderMekanik({
+    Key? key,
+    required this.mediaQueryData,
+  }) : super(key: key);
+
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: mediaQueryData.size.width,
+          height: mediaQueryData.size.height * 0.4,
+          decoration: const BoxDecoration(
+            color: primaryColor,
+          ),
+        ),
+        // ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: defaultPadding * 3,
+            horizontal: defaultPadding * 2,
+          ),
+          child: Text(
+            "Request\nSparepart",
+            style: Theme.of(context).textTheme.headline5?.copyWith(
+                // color: ,
+                fontWeight: FontWeight.w700,
+                fontSize: 30),
+          ),
+        ),
+        Positioned(
+          top: mediaQueryData.size.height * 0.01,
+          left: mediaQueryData.size.height * 0.03,
+          child: Image.asset(
+            'assets/logo/person1.png',
+            width: mediaQueryData.size.height * 0.7,
+            height: mediaQueryData.size.width * 0.7,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderInputSparepart extends StatelessWidget {
+  const HeaderInputSparepart({
+    Key? key,
+    required this.mediaQueryData,
+  }) : super(key: key);
+
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: mediaQueryData.size.width,
+          height: mediaQueryData.size.height * 0.4,
+          decoration: const BoxDecoration(
+            color: primaryColor,
+          ),
+        ),
+        // ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: defaultPadding * 3,
+            horizontal: defaultPadding * 2,
+          ),
+          child: Text(
+            "Input\nSparepart",
+            style: Theme.of(context).textTheme.headline5?.copyWith(
+                // color: ,
+                fontWeight: FontWeight.w700,
+                fontSize: 30),
+          ),
+        ),
+        Positioned(
+          top: mediaQueryData.size.height * 0.01,
+          left: mediaQueryData.size.height * 0.03,
+          child: Image.asset(
+            'assets/logo/person1.png',
+            width: mediaQueryData.size.height * 0.7,
+            height: mediaQueryData.size.width * 0.7,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HeaderPemimpin extends StatelessWidget {
+  const HeaderPemimpin({
+    Key? key,
+    required this.mediaQueryData,
+  }) : super(key: key);
+
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: mediaQueryData.size.width,
+          height: mediaQueryData.size.height * 0.4,
+          decoration: const BoxDecoration(
+            color: primaryColor,
+          ),
+        ),
+        // ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: defaultPadding * 3,
+            horizontal: defaultPadding * 2,
+          ),
+          child: Text(
+            "List\nSparepart",
+            style: Theme.of(context).textTheme.headline5?.copyWith(
+                // color: ,
+                fontWeight: FontWeight.w700,
+                fontSize: 30),
+          ),
+        ),
+        Positioned(
+          top: mediaQueryData.size.height * 0.01,
+          left: mediaQueryData.size.height * 0.03,
+          child: Image.asset(
+            'assets/logo/person3.png',
+            width: mediaQueryData.size.height * 0.7,
+            height: mediaQueryData.size.width * 0.7,
+          ),
+        ),
+      ],
+    );
+  }
+}
