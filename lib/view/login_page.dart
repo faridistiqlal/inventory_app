@@ -52,9 +52,9 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacementNamed(context, '/HalAdmin');
         //  Navigator.pushReplacementNamed(context, '/HalTabAdmin');
       } else if (pref.getString('Level') == '2') {
-        // Navigator.pushReplacementNamed(context, '/HalIrban');
+        Navigator.pushReplacementNamed(context, '/HalMekanik');
       } else if (pref.getString('Level') == '3') {
-        // Navigator.pushReplacementNamed(context, '/HalInspektur');
+        Navigator.pushReplacementNamed(context, '/HalMesinMekanik');
       } else {
         if (kDebugMode) {
           print("cek hal_login");
@@ -226,10 +226,10 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
               );
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //   '/HalAdmin',
-              //   ModalRoute.withName('/HalAdmin'),
-              // );
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/HalMekanik',
+                ModalRoute.withName('/HalMekanik'),
+              );
             } else if (loginuser['Data']['Level'] == "3") {
               SharedPreferences pref = await SharedPreferences.getInstance();
               pref.setBool("_sudahlogin", true);
@@ -248,10 +248,10 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
               );
-              // Navigator.of(context).pushNamedAndRemoveUntil(
-              //   '/HalAdmin',
-              //   ModalRoute.withName('/HalAdmin'),
-              // );
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/HalMesinMekanik',
+                ModalRoute.withName('/HalMesinMekanik'),
+              );
             }
           }
         }
