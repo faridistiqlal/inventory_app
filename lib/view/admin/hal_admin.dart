@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory_app/style/style.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -12,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
 import '../../class/header.dart';
 import 'dart:convert';
+
+import 'detail/detail_sparepart.dart';
 
 class HalAdmin extends StatefulWidget {
   const HalAdmin({Key? key}) : super(key: key);
@@ -135,15 +138,9 @@ class _HalAdminState extends State<HalAdmin> {
                   ),
                   IconsButton(
                     onPressed: () async {
-                      SharedPreferences preferences =
+                      SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      for (String key in preferences.getKeys()) {
-                        if (key != "_pref") {
-                          preferences.remove(key);
-                        }
-                      }
-
-                      // pref.clear();
+                      pref.clear();
                       _cekLogout();
                       Navigator.pop(context);
                     },
@@ -217,24 +214,7 @@ class _HalAdminState extends State<HalAdmin> {
                   child: _foundUsers.isNotEmpty
                       ? ListView.builder(
                           itemCount: _foundUsers.length,
-                          itemBuilder: (context, index) =>
-                              // Card(
-                              //   key: ValueKey(_foundUsers[index]["id"]),
-                              //   color: Colors.amberAccent,
-                              //   elevation: 4,
-                              //   margin: const EdgeInsets.symmetric(vertical: 10),
-                              //   child:
-                              // ListTile(
-                              //   leading: Text(
-                              //     _foundUsers[index]["id"].toString(),
-                              //     style: const TextStyle(fontSize: 24),
-                              //   ),
-                              //   title: Text(_foundUsers[index]['nama']),
-                              //   subtitle: Text(
-                              //       '${_foundUsers[index]["kode"].toString()} years old'),
-                              // ),
-
-                              Container(
+                          itemBuilder: (context, index) => Container(
                             key: ValueKey(_foundUsers[index]["id"]),
                             padding: EdgeInsets.only(
                               top: mediaQueryData.size.height * 0.01,
@@ -259,7 +239,16 @@ class _HalAdminState extends State<HalAdmin> {
                               child: Material(
                                 color: Colors.white,
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailSparepart(
+                                          dId: _foundUsers[index]["id"],
+                                        ),
+                                      ),
+                                    ).then((value) => getSparepart());
+                                  },
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -386,9 +375,28 @@ class _HalAdminState extends State<HalAdmin> {
                           ),
                           // ),
                         )
-                      : const Text(
-                          'No results found',
-                          style: TextStyle(fontSize: 24),
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FaIcon(
+                                FontAwesomeIcons.gears,
+                                color: Colors.grey[300],
+                                size: 60,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: mediaQueryData.size.height * 0.02),
+                              ),
+                              Text(
+                                "Tidak ada hasil",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.grey[300],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                 ),
               ],
