@@ -469,7 +469,7 @@ class _LoginPageState extends State<LoginPage> {
               Radius.circular(10.0),
             ),
           ),
-          hintText: 'Passowrd',
+          hintText: 'Password',
           hintStyle: const TextStyle(
             fontSize: 14,
             color: Colors.grey,
