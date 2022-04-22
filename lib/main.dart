@@ -9,6 +9,8 @@ import 'package:inventory_app/view/admin/menuadmin/hal_sparepart.dart';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:inventory_app/view/mekanik/hal_mekanik.dart';
 import 'package:inventory_app/view/mekanik/input/post_request_sparepart.dart';
+import 'package:inventory_app/view/pimpinan/hal_pimpinan_request.dart';
+import 'package:inventory_app/view/pimpinan/hal_pimpinan_sparepart.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinna.dart';
 import 'package:inventory_app/view/splashscreen.dart';
 
@@ -35,7 +37,11 @@ void main() {
       '/HalSparepart': (BuildContext context) => const HalSparepart(),
       '/AddSparepart': (BuildContext context) => const AddSparepart(),
       '/HalMekanik': (BuildContext context) => const HalMekanik(),
+      '/HalRequestMekanikList': (BuildContext context) =>
+          const HalRequestMekanikList(),
       '/HalMesinMekanik': (BuildContext context) => const HalMesinMekanik(),
+      '/HalMesinMekanikList': (BuildContext context) =>
+          const HalMesinMekanikList(),
       '/PostRequestSparepart': (BuildContext context) =>
           const PostRequestSparepart(),
       '/DetailSparepart': (BuildContext context) => const DetailSparepart(

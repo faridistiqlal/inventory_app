@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
@@ -133,24 +134,383 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
           ),
         ],
       ),
-      body: isloading
-          ? shimmerinventory()
-          : Stack(children: [
-              HeaderPemimpin(mediaQueryData: mediaQueryData),
-              Container(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  width: MediaQuery.of(context).size.width,
-                  margin:
-                      EdgeInsets.only(top: mediaQueryData.size.height * 0.17),
-                  decoration: BoxDecoration(
-                    color: bgCOlor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(children: [
-                    ListSparepart(
-                        dataJSON: dataJSON, mediaQueryData: mediaQueryData),
-                  ]))
-            ]),
+      body:
+          // isloading
+          //     ? shimmerinventory()
+          //     :
+          Stack(
+        children: [
+          HeaderPemimpin(mediaQueryData: mediaQueryData),
+          Container(
+            padding: const EdgeInsets.all(defaultPadding),
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.17),
+            decoration: BoxDecoration(
+              color: bgCOlor,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                // ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
+                // ListView(
+                //   children: <Widget>[
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: mediaQueryData.size.width * 0.475,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Material(
+                              color: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/HalMesinMekanikList');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const FaIcon(
+                                        FontAwesomeIcons.gears,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: const <Widget>[
+                                          Text(
+                                            'List Sparepart', //IBADAH
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.01,
+                                        ),
+                                      ),
+                                      // const Text(
+                                      //   "Sparepart",
+                                      //   style: TextStyle(
+                                      //     fontSize: 15,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.01,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Tap to view",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.white.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: mediaQueryData.size.width * 0.475,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Material(
+                              color: Colors.purple,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/HalRequestMekanikList');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const FaIcon(
+                                        FontAwesomeIcons.boxesStacked,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: const <Widget>[
+                                          Text(
+                                            'List Request', //IBADAH
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.01,
+                                        ),
+                                      ),
+                                      // const Text(
+                                      //   "List Request",
+                                      //   style: TextStyle(
+                                      //     fontSize: 15,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.01,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Tap to view",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.white.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                // Column(
+                //   children: [
+                //     Row(
+                //       children: [
+                //         SizedBox(
+                //           width: mediaQueryData.size.width * 0.475,
+                //           child: Card(
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(15.0),
+                //             ),
+                //             child: Material(
+                //               color: Colors.purple,
+                //               shape: RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(15.0),
+                //               ),
+                //               child: InkWell(
+                //                 onTap: () {},
+                //                 child: Container(
+                //                   decoration: BoxDecoration(
+                //                     borderRadius: BorderRadius.circular(15),
+                //                   ),
+                //                   padding: const EdgeInsets.all(10.0),
+                //                   child: Column(
+                //                     mainAxisAlignment: MainAxisAlignment.start,
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: <Widget>[
+                //                       const FaIcon(
+                //                         FontAwesomeIcons.handHoldingHand,
+                //                         color: Colors.white,
+                //                         size: 35,
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.02,
+                //                         ),
+                //                       ),
+                //                       Row(
+                //                         mainAxisAlignment:
+                //                             MainAxisAlignment.spaceBetween,
+                //                         // crossAxisAlignment: CrossAxisAlignment.start,
+                //                         children: const <Widget>[
+                //                           Text(
+                //                             '45 Buah', //IBADAH
+                //                             style: TextStyle(
+                //                               fontSize: 17,
+                //                               fontWeight: FontWeight.bold,
+                //                               color: Colors.white,
+                //                             ),
+                //                           ),
+                //                         ],
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.01,
+                //                         ),
+                //                       ),
+                //                       const Text(
+                //                         "Request",
+                //                         style: TextStyle(
+                //                           fontSize: 15,
+                //                           color: Colors.white,
+                //                         ),
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.02,
+                //                         ),
+                //                       ),
+                //                       Text(
+                //                         "Tap to view",
+                //                         style: TextStyle(
+                //                           fontSize: 11,
+                //                           color: Colors.white.withOpacity(0.5),
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //         SizedBox(
+                //           width: mediaQueryData.size.width * 0.475,
+                //           child: Card(
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.circular(15.0),
+                //             ),
+                //             child: Material(
+                //               color: Colors.purpleAccent,
+                //               shape: RoundedRectangleBorder(
+                //                 borderRadius: BorderRadius.circular(15.0),
+                //               ),
+                //               child: InkWell(
+                //                 onTap: () {},
+                //                 child: Container(
+                //                   decoration: BoxDecoration(
+                //                     borderRadius: BorderRadius.circular(15),
+                //                   ),
+                //                   padding: const EdgeInsets.all(10.0),
+                //                   child: Column(
+                //                     mainAxisAlignment: MainAxisAlignment.start,
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: <Widget>[
+                //                       const FaIcon(
+                //                         FontAwesomeIcons.microchip,
+                //                         color: Colors.white,
+                //                         size: 35,
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.02,
+                //                         ),
+                //                       ),
+                //                       Row(
+                //                         mainAxisAlignment:
+                //                             MainAxisAlignment.spaceBetween,
+                //                         // crossAxisAlignment: CrossAxisAlignment.start,
+                //                         children: const <Widget>[
+                //                           Text(
+                //                             '25 Buah', //IBADAH
+                //                             style: TextStyle(
+                //                               fontSize: 17,
+                //                               fontWeight: FontWeight.bold,
+                //                               color: Colors.white,
+                //                             ),
+                //                           ),
+                //                         ],
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.01,
+                //                         ),
+                //                       ),
+                //                       const Text(
+                //                         "Mesin",
+                //                         style: TextStyle(
+                //                           fontSize: 15,
+                //                           color: Colors.white,
+                //                         ),
+                //                       ),
+                //                       Padding(
+                //                         padding: EdgeInsets.only(
+                //                           top:
+                //                               mediaQueryData.size.height * 0.02,
+                //                         ),
+                //                       ),
+                //                       Text(
+                //                         "Tap to view",
+                //                         style: TextStyle(
+                //                           fontSize: 11,
+                //                           color: Colors.white.withOpacity(0.5),
+                //                         ),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ],
+                //     )
+                //   ],
+                // ),
+              ],
+            ),
+            //   ],
+            // ),
+          )
+        ],
+      ),
     );
   }
 
