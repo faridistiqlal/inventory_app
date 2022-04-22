@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,6 +48,7 @@ class _HalRequestMekanikListState extends State<HalRequestMekanikList> {
     }
   }
 
+  // ignore: unused_element
   Future _cekLogout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("_isLoggedIn") == null) {

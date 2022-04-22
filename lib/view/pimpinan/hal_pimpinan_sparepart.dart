@@ -6,13 +6,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
 import 'package:inventory_app/style/style.dart';
-import 'package:material_dialogs/material_dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+// import 'package:material_dialogs/material_dialogs.dart';
+// import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+// import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../class/header.dart';
+// import '../../class/header.dart';
 
 class HalMesinMekanikList extends StatefulWidget {
   const HalMesinMekanikList({Key? key}) : super(key: key);
@@ -53,6 +53,7 @@ class _HalMesinMekanikListState extends State<HalMesinMekanikList> {
     }
   }
 
+  // ignore: unused_element
   Future _cekLogout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("_isLoggedIn") == null) {
