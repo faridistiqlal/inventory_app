@@ -332,178 +332,181 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     )
                   ],
                 ),
-                // Column(
-                //   children: [
-                //     Row(
-                //       children: [
-                //         SizedBox(
-                //           width: mediaQueryData.size.width * 0.475,
-                //           child: Card(
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(15.0),
-                //             ),
-                //             child: Material(
-                //               color: Colors.purple,
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(15.0),
-                //               ),
-                //               child: InkWell(
-                //                 onTap: () {},
-                //                 child: Container(
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(15),
-                //                   ),
-                //                   padding: const EdgeInsets.all(10.0),
-                //                   child: Column(
-                //                     mainAxisAlignment: MainAxisAlignment.start,
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: <Widget>[
-                //                       const FaIcon(
-                //                         FontAwesomeIcons.handHoldingHand,
-                //                         color: Colors.white,
-                //                         size: 35,
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Row(
-                //                         mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                         // crossAxisAlignment: CrossAxisAlignment.start,
-                //                         children: const <Widget>[
-                //                           Text(
-                //                             '45 Buah', //IBADAH
-                //                             style: TextStyle(
-                //                               fontSize: 17,
-                //                               fontWeight: FontWeight.bold,
-                //                               color: Colors.white,
-                //                             ),
-                //                           ),
-                //                         ],
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       const Text(
-                //                         "Request",
-                //                         style: TextStyle(
-                //                           fontSize: 15,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Text(
-                //                         "Tap to view",
-                //                         style: TextStyle(
-                //                           fontSize: 11,
-                //                           color: Colors.white.withOpacity(0.5),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(
-                //           width: mediaQueryData.size.width * 0.475,
-                //           child: Card(
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(15.0),
-                //             ),
-                //             child: Material(
-                //               color: Colors.purpleAccent,
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(15.0),
-                //               ),
-                //               child: InkWell(
-                //                 onTap: () {},
-                //                 child: Container(
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(15),
-                //                   ),
-                //                   padding: const EdgeInsets.all(10.0),
-                //                   child: Column(
-                //                     mainAxisAlignment: MainAxisAlignment.start,
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: <Widget>[
-                //                       const FaIcon(
-                //                         FontAwesomeIcons.microchip,
-                //                         color: Colors.white,
-                //                         size: 35,
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Row(
-                //                         mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                         // crossAxisAlignment: CrossAxisAlignment.start,
-                //                         children: const <Widget>[
-                //                           Text(
-                //                             '25 Buah', //IBADAH
-                //                             style: TextStyle(
-                //                               fontSize: 17,
-                //                               fontWeight: FontWeight.bold,
-                //                               color: Colors.white,
-                //                             ),
-                //                           ),
-                //                         ],
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       const Text(
-                //                         "Mesin",
-                //                         style: TextStyle(
-                //                           fontSize: 15,
-                //                           color: Colors.white,
-                //                         ),
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Text(
-                //                         "Tap to view",
-                //                         style: TextStyle(
-                //                           fontSize: 11,
-                //                           color: Colors.white.withOpacity(0.5),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     )
-                //   ],
-                // ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: mediaQueryData.size.width * 0.475,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Material(
+                              color: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/HalPimpinanLaporanSparepart');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const FaIcon(
+                                        FontAwesomeIcons.fileLines,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: const <Widget>[
+                                          Text(
+                                            'Laporan Sparepart', //IBADAH
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      // const Text(
+                                      //   "Request",
+                                      //   style: TextStyle(
+                                      //     fontSize: 15,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      // Padding(
+                                      //   padding: EdgeInsets.only(
+                                      //     top:
+                                      //         mediaQueryData.size.height * 0.02,
+                                      //   ),
+                                      // ),
+                                      Text(
+                                        "Tap to view",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.white.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: mediaQueryData.size.width * 0.475,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Material(
+                              color: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const FaIcon(
+                                        FontAwesomeIcons.fileImport,
+                                        color: Colors.white,
+                                        size: 35,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        // crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: const <Widget>[
+                                          Text(
+                                            'Laporan Request', //IBADAH
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // Padding(
+                                      //   padding: EdgeInsets.only(
+                                      //     top:
+                                      //         mediaQueryData.size.height * 0.01,
+                                      //   ),
+                                      // ),
+                                      // const Text(
+                                      //   "Mesin",
+                                      //   style: TextStyle(
+                                      //     fontSize: 15,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top:
+                                              mediaQueryData.size.height * 0.02,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Tap to view",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.white.withOpacity(0.5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ],
             ),
             //   ],
