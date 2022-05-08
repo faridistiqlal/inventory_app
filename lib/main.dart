@@ -9,10 +9,11 @@ import 'package:inventory_app/view/admin/menuadmin/hal_sparepart.dart';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:inventory_app/view/mekanik/hal_mekanik.dart';
 import 'package:inventory_app/view/mekanik/input/post_request_sparepart.dart';
+import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_request.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_sparepart.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_request.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_sparepart.dart';
-import 'package:inventory_app/view/pimpinan/hal_pimpinna.dart';
+import 'package:inventory_app/view/pimpinan/hal_pimpinan.dart';
 import 'package:inventory_app/view/splashscreen.dart';
 
 import 'view/pimpinan/detail/detail_pimpinan_request.dart';
@@ -46,6 +47,8 @@ void main() {
           ),
       '/HalPimpinanLaporanSparepart': (BuildContext context) =>
           const HalPimpinanLaporanSparepart(),
+      '/HalPimpinanLaporanRequest': (BuildContext context) =>
+          const HalPimpinanLaporanRequest(),
       '/HalRequestMekanikList': (BuildContext context) =>
           const HalRequestMekanikList(),
       '/HalMesinMekanik': (BuildContext context) => const HalMesinMekanik(),
