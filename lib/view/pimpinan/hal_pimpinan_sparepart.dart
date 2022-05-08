@@ -135,7 +135,9 @@ class _HalMesinMekanikListState extends State<HalMesinMekanikList> {
         // ],
       ),
       body: isloading
-          ? shimmerinventory()
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
       // Stack(children: [
       //     HeaderPemimpin(mediaQueryData: mediaQueryData),
