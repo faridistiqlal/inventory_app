@@ -12,7 +12,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-
+import 'package:intl/intl.dart';
 import '../../class/header.dart';
 
 class HalMesinMekanik extends StatefulWidget {
@@ -23,10 +23,55 @@ class HalMesinMekanik extends StatefulWidget {
 }
 
 class _HalMesinMekanikState extends State<HalMesinMekanik> {
+  var formatedTanggal = DateFormat('yyyy-dd-MM').format(DateTime.now());
   List? dataJSON;
+  List? laporanbydateJSON;
   var isloading = false;
+
+  String? barangmasuk;
+  String? barangkeluar;
+  int? barangreturn;
+  int? reqproses;
+  int? reqselesai;
+  int? reqtotal;
 // ignore: unused_field
   bool _isLoggedIn = false;
+
+  void laporanbyDate() async {
+    // SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      isloading = true;
+    });
+    String theUrl = getMyUrl.url + 'prosses/laporanbydate';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      // "tanggal": formatedTanggal.toString(),
+      "tanggal": '',
+    });
+    var laporanbydateJSON = json.decode(res.body);
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          barangmasuk = laporanbydateJSON['barangmasuk'];
+          barangkeluar = laporanbydateJSON['barangkeluar'];
+          barangreturn = laporanbydateJSON['barangreturn'];
+          reqproses = laporanbydateJSON['reqproses'];
+          reqselesai = laporanbydateJSON['reqselesai'];
+          reqtotal = laporanbydateJSON['reqtotal'];
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print(laporanbydateJSON);
+      print(formatedTanggal.toString());
+    }
+  }
+
   Future<dynamic> getSparepart() async {
     setState(() {
       isloading = true;
@@ -67,6 +112,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   @override
   void initState() {
     getSparepart();
+    laporanbyDate();
     super.initState();
   }
 
@@ -86,7 +132,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
       // ),
       appBar: AppBar(
         title: Text(
-          'Pimpinan',
+          'Pimpinan' + barangmasuk.toString(),
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -154,12 +200,17 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                 // ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
                 // ListView(
                 //   children: <Widget>[
+                cardStock(),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -244,7 +295,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           ),
                         ),
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -337,7 +388,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     Row(
                       children: [
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -422,7 +473,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           ),
                         ),
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -513,6 +564,209 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
             // ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget cardStock() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return isloading
+        ? _buildProgressIndicator()
+        : SizedBox(
+            width: mediaQueryData.size.width,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Material(
+                color: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$barangmasuk",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Barang\nMasuk',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$barangkeluar",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Barang\nKeluar',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$barangreturn",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Barang\nReturn',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$reqproses",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Request\nProses',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$reqselesai",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Request\nSelesai',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  "$reqtotal",
+                                  style: const TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                const Text(
+                                  'Request\nTotal',
+                                  style: TextStyle(
+                                    color: Color(0xFF2e2e2e),
+                                    fontSize: 13.0,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+  }
+
+  Widget _buildProgressIndicator() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    // SizeConfig().init(context);
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: Shimmer.fromColors(
+        direction: ShimmerDirection.ltr,
+        highlightColor: Colors.white,
+        baseColor: const Color.fromARGB(255, 201, 191, 191),
+        child: Container(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.grey,
+                    ),
+                    height: mediaQueryData.size.height * 0.14,
+                    width: mediaQueryData.size.width,
+                    // color: Colors.grey,
+                  ),
+
+                  // Row(
+                ],
+              ),
+              SizedBox(height: mediaQueryData.size.height * 0.01),
+            ],
+          ),
+        ),
       ),
     );
   }
