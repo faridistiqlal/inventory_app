@@ -2,10 +2,10 @@ import 'dart:convert';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
-import 'package:inventory_app/style/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -177,20 +177,29 @@ class _HalRequestMekanikListState extends State<HalRequestMekanikList> {
                 shrinkWrap: true,
                 itemCount: dataJSON == null ? 0 : dataJSON?.length,
                 itemBuilder: (BuildContext context, int i) {
-                  if (dataJSON?[i]["id"] == null) {
-                    return Center(
+                  if (dataJSON?[i]["id"] == "NotFound") {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: mediaQueryData.size.height * 0.7,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.calendar_today,
-                            size: 150,
-                            color: Colors.grey[300],
+                          const FaIcon(
+                            FontAwesomeIcons.boxesStacked,
+                            color: Colors.grey,
+                            size: 120,
                           ),
-                          Text(
-                            "Tidak ada Sparepart",
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: mediaQueryData.size.height * 0.02,
+                            ),
+                          ),
+                          const Text(
+                            "Tidak ada Request",
                             style: TextStyle(
                               fontSize: 20.0,
-                              color: Colors.grey[300],
+                              color: Colors.grey,
                             ),
                           )
                         ],
@@ -443,6 +452,14 @@ class _HalRequestMekanikListState extends State<HalRequestMekanikList> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int i) {
+                                                // var statussub;
+                                                // if (dataJSON?[i]["status_id"] ==
+                                                //     "3") {
+                                                //   if (dataJSON?[i]
+                                                //           ["status_id"] >=
+                                                //       "1") {
+                                                //   } else {}
+                                                // } else {}
                                                 return ListTile(
                                                   leading: CircleAvatar(
                                                     backgroundColor:
@@ -482,7 +499,13 @@ class _HalRequestMekanikListState extends State<HalRequestMekanikList> {
                                                   ), //awalan pada circle image
                                                   subtitle: Text(
                                                       dataJSON2?[i]["nama"]),
-                                                  // trailing: Text("10.00 PM"),
+                                                  trailing: Text(
+                                                    dataJSON2?[i]["credential"],
+                                                    style: const TextStyle(
+                                                      fontSize: 12.0,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
                                                 );
                                               }),
                                         )
