@@ -149,7 +149,7 @@ class _HalPimpinanLaporanSparepartState
       // ),
       appBar: AppBar(
         title: Text(
-          'Laporan',
+          'Laporan Sparepart',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -706,7 +706,7 @@ class ListSparepartKeluar extends StatelessWidget {
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                dataJSONkeluar?[i]["mesin"],
+                                dataJSONkeluar?[i]["sperpart"],
                                 style: const TextStyle(
                                   fontSize: 15.0,
                                   color: Colors.black,
@@ -719,11 +719,11 @@ class ListSparepartKeluar extends StatelessWidget {
                               margin: const EdgeInsets.only(bottom: 5.0),
                               child: dataJSONkeluar?[i]["mesin"] != null
                                   ? Text(
-                                      dataJSONkeluar?[i]["mesin"],
+                                      'Mesin : ' + dataJSONkeluar?[i]["mesin"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
-                                        color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.bold,
                                         //fontWeight: FontWeight.normal,
                                       ),
                                     )
@@ -739,14 +739,14 @@ class ListSparepartKeluar extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: dataJSONkeluar?[i]["sperpart"] != null
+                              child: dataJSONkeluar?[i]["tanggal"] != null
                                   ? Text(
-                                      'Kode : ' +
-                                          dataJSONkeluar?[i]["sperpart"],
+                                      'Tanggal: ' +
+                                          dataJSONkeluar?[i]["tanggal"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
                                         //fontWeight: FontWeight.normal,
                                       ),
                                     )
@@ -767,7 +767,7 @@ class ListSparepartKeluar extends StatelessWidget {
                                   margin: const EdgeInsets.only(bottom: 5.0),
                                   child: dataJSONkeluar?[i]["jumlah"] != null
                                       ? Text(
-                                          'Stok : ' +
+                                          'Jumlah : ' +
                                               dataJSONkeluar?[i]["jumlah"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
@@ -931,7 +931,7 @@ class ListSparepartReturn extends StatelessWidget {
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                dataJSONreturn?[i]["mesin"],
+                                dataJSONreturn?[i]["sperpart"],
                                 style: const TextStyle(
                                   fontSize: 15.0,
                                   color: Colors.black,
@@ -944,10 +944,10 @@ class ListSparepartReturn extends StatelessWidget {
                               margin: const EdgeInsets.only(bottom: 5.0),
                               child: dataJSONreturn?[i]["mesin"] != null
                                   ? Text(
-                                      dataJSONreturn?[i]["mesin"],
+                                      'Mesin : ' + dataJSONreturn?[i]["mesin"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
-                                        color: Colors.black,
+                                        color: Colors.red,
                                         // fontWeight: FontWeight.bold,
                                         //fontWeight: FontWeight.normal,
                                       ),
@@ -964,10 +964,10 @@ class ListSparepartReturn extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: dataJSONreturn?[i]["sperpart"] != null
+                              child: dataJSONreturn?[i]["tanggal"] != null
                                   ? Text(
-                                      'Kode : ' +
-                                          dataJSONreturn?[i]["sperpart"],
+                                      'Tanggal : ' +
+                                          dataJSONreturn?[i]["tanggal"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: primaryColor,
@@ -992,7 +992,7 @@ class ListSparepartReturn extends StatelessWidget {
                                   margin: const EdgeInsets.only(bottom: 5.0),
                                   child: dataJSONreturn?[i]["jumlah"] != null
                                       ? Text(
-                                          'Stok : ' +
+                                          'Jumlah : ' +
                                               dataJSONreturn?[i]["jumlah"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
@@ -1016,8 +1016,7 @@ class ListSparepartReturn extends StatelessWidget {
                                       right: 5.0, bottom: 5.0),
                                   child: dataJSONreturn?[i]["jam"] != null
                                       ? Text(
-                                          'Retur : ' +
-                                              dataJSONreturn?[i]["jam"],
+                                          'Jam : ' + dataJSONreturn?[i]["jam"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.blue,
