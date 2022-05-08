@@ -25,6 +25,8 @@ class HalPimpinanLaporanSparepart extends StatefulWidget {
 class _HalPimpinanLaporanSparepartState
     extends State<HalPimpinanLaporanSparepart> {
   List? dataJSON;
+  List? dataJSONkeluar;
+  List? dataJSONreturn;
   var isloading = false;
 // ignore: unused_field
   bool _isLoggedIn = false;
@@ -32,14 +34,15 @@ class _HalPimpinanLaporanSparepartState
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/stoksperpart';
-    final res = await http.get(
-      Uri.parse(theUrl),
-      headers: {
-        "name": "invent",
-        "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
-      },
-    );
+    // String theUrl = getMyUrl.url + 'prosses/stoksperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "tanggal ": '',
+      "status": '1'
+    });
     if (res.statusCode == 200) {
       setState(
         () {
@@ -52,6 +55,62 @@ class _HalPimpinanLaporanSparepartState
     }
     if (kDebugMode) {
       print(dataJSON);
+    }
+  }
+
+  Future<dynamic> getSparepartkeluar() async {
+    setState(() {
+      isloading = true;
+    });
+    // String theUrl = getMyUrl.url + 'prosses/stoksperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "tanggal ": '',
+      "status": '2'
+    });
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          dataJSONkeluar = json.decode(res.body);
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print(dataJSONkeluar);
+    }
+  }
+
+  Future<dynamic> getSparepartreturn() async {
+    setState(() {
+      isloading = true;
+    });
+    // String theUrl = getMyUrl.url + 'prosses/stoksperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "tanggal ": '',
+      "status": '3'
+    });
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          dataJSONreturn = json.decode(res.body);
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print(dataJSONreturn);
     }
   }
 
@@ -69,6 +128,8 @@ class _HalPimpinanLaporanSparepartState
   @override
   void initState() {
     getSparepart();
+    getSparepartkeluar();
+    getSparepartreturn();
     super.initState();
   }
 
@@ -88,7 +149,7 @@ class _HalPimpinanLaporanSparepartState
       // ),
       appBar: AppBar(
         title: Text(
-          'Sparepart',
+          'Laporan',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -137,25 +198,122 @@ class _HalPimpinanLaporanSparepartState
         // ],
       ),
       body: isloading
-          ? shimmerinventory()
-          : ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
-      // Stack(children: [
-      //     HeaderPemimpin(mediaQueryData: mediaQueryData),
-      //     Container(
-      //         padding: const EdgeInsets.all(defaultPadding),
-      //         width: MediaQuery.of(context).size.width,
-      //         margin:
-      //             EdgeInsets.only(top: mediaQueryData.size.height * 0.17),
-      //         decoration: BoxDecoration(
-      //           color: bgCOlor,
-      //           borderRadius: BorderRadius.circular(15),
-      //         ),
-      //         child: Column(children: [
-      //           ListSparepart(
-      //               dataJSON: dataJSON, mediaQueryData: mediaQueryData),
-      //         ]))
-      //   ]
-      // ),
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: mediaQueryData.size.height * 0.01,
+                  left: mediaQueryData.size.height * 0.01,
+                  right: mediaQueryData.size.height * 0.01,
+                  // bottom: mediaQueryData.size.height * 0.02,
+                ),
+                child: Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  // elevation: 1.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(0.0, 5.0),
+                          blurRadius: 7.0),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      ExpansionTile(
+                        leading: Column(
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.012,
+                                right: mediaQueryData.size.height * 0.012,
+                                // bottom: mediaQueryData.size.height * 0.01,
+                                // top:
+                                //     mediaQueryData.size.height *
+                                //         0.02,
+                              ),
+                              icon: const Icon(Icons.inbox_rounded),
+                              color: Colors.green,
+                              iconSize: 40.0,
+                              onPressed: () {
+                                // Navigator.pushNamed(context, '/DetailSurat');
+                              },
+                            ),
+                          ],
+                        ),
+                        title: const Text("Sperpart Masuk"),
+                        children: [
+                          ListSparepart(
+                              dataJSON: dataJSON,
+                              mediaQueryData: mediaQueryData),
+                        ],
+                      ),
+                      ExpansionTile(
+                        leading: Column(
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.012,
+                                right: mediaQueryData.size.height * 0.012,
+                                // bottom: mediaQueryData.size.height * 0.01,
+                                // top:
+                                //     mediaQueryData.size.height *
+                                //         0.02,
+                              ),
+                              icon: const Icon(Icons.outbox_rounded),
+                              color: Colors.orange,
+                              iconSize: 40.0,
+                              onPressed: () {
+                                // Navigator.pushNamed(context, '/DetailSurat');
+                              },
+                            ),
+                          ],
+                        ),
+                        title: const Text("Sperpart Keluar"),
+                        children: [
+                          ListSparepartKeluar(
+                              dataJSONkeluar: dataJSONkeluar,
+                              mediaQueryData: mediaQueryData),
+                        ],
+                      ),
+                      ExpansionTile(
+                        leading: Column(
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.012,
+                                right: mediaQueryData.size.height * 0.012,
+                                // bottom: mediaQueryData.size.height * 0.01,
+                                // top:
+                                //     mediaQueryData.size.height *
+                                //         0.02,
+                              ),
+                              icon: const Icon(
+                                  Icons.settings_backup_restore_outlined),
+                              color: Colors.red,
+                              iconSize: 40.0,
+                              onPressed: () {
+                                // Navigator.pushNamed(context, '/DetailSurat');
+                              },
+                            ),
+                          ],
+                        ),
+                        title: const Text("Sperpart Return"),
+                        children: [
+                          ListSparepartReturn(
+                              dataJSONreturn: dataJSONreturn,
+                              mediaQueryData: mediaQueryData),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
     );
   }
 
@@ -241,14 +399,17 @@ class ListSparepart extends StatelessWidget {
       shrinkWrap: true,
       itemCount: dataJSON == null ? 0 : dataJSON?.length,
       itemBuilder: (BuildContext context, int i) {
-        if (dataJSON?[i]["id"] == null) {
+        if (dataJSON?[i]["id"] == 'NotFound') {
           return Center(
             child: Column(
               children: <Widget>[
                 Icon(
-                  Icons.calendar_today,
-                  size: 150,
+                  Icons.inbox_rounded,
+                  size: 70,
                   color: Colors.grey[300],
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
                 ),
                 Text(
                   "Tidak ada Sparepart",
@@ -256,6 +417,9 @@ class ListSparepart extends StatelessWidget {
                     fontSize: 20.0,
                     color: Colors.grey[300],
                   ),
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
                 )
               ],
             ),
@@ -266,7 +430,7 @@ class ListSparepart extends StatelessWidget {
               top: mediaQueryData.size.height * 0.01,
               left: mediaQueryData.size.height * 0.01,
               right: mediaQueryData.size.height * 0.01,
-              // bottom: mediaQueryData.size.height * 0.02,
+              bottom: mediaQueryData.size.height * 0.005,
             ),
             child: Container(
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -290,35 +454,29 @@ class ListSparepart extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         margin: const EdgeInsets.only(right: 15.0),
-                        width: mediaQueryData.size.height * 0.15,
+                        width: mediaQueryData.size.height * 0.12,
                         height: mediaQueryData.size.height * 0.12,
-                        child: dataJSON?[i]["foto"] != null
-                            ? CachedNetworkImage(
-                                imageUrl: dataJSON?[i]["foto"],
-                                placeholder: (context, url) => Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/logo/22.png",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                fit: BoxFit.cover,
-                                height: 150.0,
-                                width: 110.0,
-                              )
-                            : Image.asset(
-                                'assets/logo/22.png',
-                                // width: mediaQueryData.size.height * 0.7,
-                                // height: mediaQueryData.size.width * 0.7,
-                                fit: BoxFit.cover,
-                              ),
+                        color: Colors.green,
+                        child: IconButton(
+                          padding: EdgeInsets.only(
+                            left: mediaQueryData.size.height * 0.012,
+                            right: mediaQueryData.size.height * 0.012,
+                            // bottom: mediaQueryData.size.height * 0.01,
+                            // top:
+                            //     mediaQueryData.size.height *
+                            //         0.02,
+                          ),
+                          icon: const Icon(Icons.inbox_rounded),
+                          color: Colors.white,
+                          iconSize: 50.0,
+                          onPressed: () {
+                            // Navigator.pushNamed(context, '/DetailSurat');
+                          },
+                        ),
                       ),
-                      // SizedBox(
-                      //   width: mediaQueryData.size.width * 0.02,
-                      // ),
+                      SizedBox(
+                        width: mediaQueryData.size.width * 0.01,
+                      ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +485,7 @@ class ListSparepart extends StatelessWidget {
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                dataJSON?[i]["nama"],
+                                dataJSON?[i]["sperpart"],
                                 style: const TextStyle(
                                   fontSize: 15.0,
                                   color: Colors.black,
@@ -338,9 +496,230 @@ class ListSparepart extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: dataJSON?[i]["nama_mesin"] != null
+                              child: dataJSON?[i]["mesin"] != null
                                   ? Text(
-                                      dataJSON?[i]["nama_mesin"],
+                                      'Mesin : ' + dataJSON?[i]["mesin"],
+                                      style: const TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    )
+                                  : const Text(
+                                      '-',
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 5.0),
+                              child: dataJSON?[i]["tanggal"] != null
+                                  ? Text(
+                                      "Tanggal : " + dataJSON?[i]["tanggal"],
+                                      style: const TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    )
+                                  : const Text(
+                                      '-',
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 5.0),
+                                  child: dataJSON?[i]["jumlah"] != null
+                                      ? Text(
+                                          'Jumlah : ' + dataJSON?[i]["jumlah"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      right: 5.0, bottom: 5.0),
+                                  child: dataJSON?[i]["jam"] != null
+                                      ? Text(
+                                          'Jam : ' + dataJSON?[i]["jam"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class ListSparepartKeluar extends StatelessWidget {
+  const ListSparepartKeluar({
+    Key? key,
+    required this.dataJSONkeluar,
+    required this.mediaQueryData,
+  }) : super(key: key);
+
+  final List? dataJSONkeluar;
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: dataJSONkeluar == null ? 0 : dataJSONkeluar?.length,
+      itemBuilder: (BuildContext context, int i) {
+        if (dataJSONkeluar?[i]["id"] == 'NotFound') {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.outbox_rounded,
+                  size: 70,
+                  color: Colors.grey[300],
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
+                ),
+                Text(
+                  "Tidak ada Sparepart",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
+                )
+              ],
+            ),
+          );
+        } else {
+          return Container(
+            padding: EdgeInsets.only(
+              top: mediaQueryData.size.height * 0.01,
+              left: mediaQueryData.size.height * 0.01,
+              right: mediaQueryData.size.height * 0.01,
+              bottom: mediaQueryData.size.height * 0.01,
+            ),
+            child: Container(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              // elevation: 1.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0.0, 5.0),
+                      blurRadius: 7.0),
+                ],
+              ),
+              child: Material(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {},
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(right: 15.0),
+                        width: mediaQueryData.size.height * 0.12,
+                        height: mediaQueryData.size.height * 0.12,
+                        color: Colors.orange,
+                        child: IconButton(
+                          padding: EdgeInsets.only(
+                            left: mediaQueryData.size.height * 0.012,
+                            right: mediaQueryData.size.height * 0.012,
+                            // bottom: mediaQueryData.size.height * 0.01,
+                            // top:
+                            //     mediaQueryData.size.height *
+                            //         0.02,
+                          ),
+                          icon: const Icon(Icons.outbox_rounded),
+                          color: Colors.white,
+                          iconSize: 50.0,
+                          onPressed: () {
+                            // Navigator.pushNamed(context, '/DetailSurat');
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: mediaQueryData.size.width * 0.01,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                              child: Text(
+                                dataJSONkeluar?[i]["mesin"],
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  //fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 5.0),
+                              child: dataJSONkeluar?[i]["mesin"] != null
+                                  ? Text(
+                                      dataJSONkeluar?[i]["mesin"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -360,9 +739,10 @@ class ListSparepart extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: dataJSON?[i]["kode"] != null
+                              child: dataJSONkeluar?[i]["sperpart"] != null
                                   ? Text(
-                                      'Kode : ' + dataJSON?[i]["kode"],
+                                      'Kode : ' +
+                                          dataJSONkeluar?[i]["sperpart"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: primaryColor,
@@ -385,9 +765,10 @@ class ListSparepart extends StatelessWidget {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(bottom: 5.0),
-                                  child: dataJSON?[i]["stok"] != null
+                                  child: dataJSONkeluar?[i]["jumlah"] != null
                                       ? Text(
-                                          'Stok : ' + dataJSON?[i]["stok"],
+                                          'Stok : ' +
+                                              dataJSONkeluar?[i]["jumlah"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.green,
@@ -408,9 +789,235 @@ class ListSparepart extends StatelessWidget {
                                 Container(
                                   margin: const EdgeInsets.only(
                                       right: 5.0, bottom: 5.0),
-                                  child: dataJSON?[i]["retur"] != null
+                                  child: dataJSONkeluar?[i]["jam"] != null
                                       ? Text(
-                                          'Retur : ' + dataJSON?[i]["retur"],
+                                          'Retur : ' +
+                                              dataJSONkeluar?[i]["jam"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class ListSparepartReturn extends StatelessWidget {
+  const ListSparepartReturn({
+    Key? key,
+    required this.dataJSONreturn,
+    required this.mediaQueryData,
+  }) : super(key: key);
+
+  final List? dataJSONreturn;
+  final MediaQueryData mediaQueryData;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: dataJSONreturn == null ? 0 : dataJSONreturn?.length,
+      itemBuilder: (BuildContext context, int i) {
+        if (dataJSONreturn?[i]["id"] == "NotFound") {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.settings_backup_restore_outlined,
+                  size: 70,
+                  color: Colors.grey[300],
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
+                ),
+                Text(
+                  "Tidak ada Sparepart",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                SizedBox(
+                  height: mediaQueryData.size.height * 0.02,
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Container(
+            padding: EdgeInsets.only(
+              top: mediaQueryData.size.height * 0.01,
+              left: mediaQueryData.size.height * 0.01,
+              right: mediaQueryData.size.height * 0.01,
+              bottom: mediaQueryData.size.height * 0.01,
+            ),
+            child: Container(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              // elevation: 1.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      offset: const Offset(0.0, 5.0),
+                      blurRadius: 7.0),
+                ],
+              ),
+              child: Material(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {},
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(right: 15.0),
+                        width: mediaQueryData.size.height * 0.12,
+                        height: mediaQueryData.size.height * 0.12,
+                        color: Colors.orange,
+                        child: IconButton(
+                          padding: EdgeInsets.only(
+                            left: mediaQueryData.size.height * 0.012,
+                            right: mediaQueryData.size.height * 0.012,
+                            // bottom: mediaQueryData.size.height * 0.01,
+                            // top:
+                            //     mediaQueryData.size.height *
+                            //         0.02,
+                          ),
+                          icon: const Icon(
+                              Icons.settings_backup_restore_outlined),
+                          color: Colors.white,
+                          iconSize: 50.0,
+                          onPressed: () {
+                            // Navigator.pushNamed(context, '/DetailSurat');
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: mediaQueryData.size.width * 0.01,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(top: 5.0, bottom: 5.0),
+                              child: Text(
+                                dataJSONreturn?[i]["mesin"],
+                                style: const TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  //fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 5.0),
+                              child: dataJSONreturn?[i]["mesin"] != null
+                                  ? Text(
+                                      dataJSONreturn?[i]["mesin"],
+                                      style: const TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    )
+                                  : const Text(
+                                      '-',
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 5.0),
+                              child: dataJSONreturn?[i]["sperpart"] != null
+                                  ? Text(
+                                      'Kode : ' +
+                                          dataJSONreturn?[i]["sperpart"],
+                                      style: const TextStyle(
+                                        fontSize: 13.0,
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    )
+                                  : const Text(
+                                      '-',
+                                      style: TextStyle(
+                                        fontSize: 13.0,
+                                        color: Colors.black,
+                                        // fontWeight: FontWeight.bold,
+                                        //fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 5.0),
+                                  child: dataJSONreturn?[i]["jumlah"] != null
+                                      ? Text(
+                                          'Stok : ' +
+                                              dataJSONreturn?[i]["jumlah"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      right: 5.0, bottom: 5.0),
+                                  child: dataJSONreturn?[i]["jam"] != null
+                                      ? Text(
+                                          'Retur : ' +
+                                              dataJSONreturn?[i]["jam"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.blue,
