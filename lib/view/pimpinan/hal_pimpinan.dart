@@ -26,6 +26,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   var formatedTanggal = DateFormat('yyyy-dd-MM').format(DateTime.now());
   List? dataJSON;
   List? laporanbydateJSON;
+  List? topkeluardateJSON;
+  List? topmasukdateJSON;
   var isloading = false;
 
   String? barangmasuk;
@@ -48,7 +50,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
       // "tanggal": formatedTanggal.toString(),
-      "tanggal": '',
+      "tanggalawal": '',
+      "tanggakhir": '',
     });
     var laporanbydateJSON = json.decode(res.body);
     if (res.statusCode == 200) {
@@ -99,6 +102,58 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     }
   }
 
+  Future<dynamic> topsparepartmasuk() async {
+    setState(() {
+      isloading = true;
+    });
+    String theUrl = getMyUrl.url + 'prosses/topbarang';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "arus": "1"
+    });
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          topmasukdateJSON = json.decode(res.body);
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print(topmasukdateJSON);
+    }
+  }
+
+  Future<dynamic> topsparepartkeluar() async {
+    setState(() {
+      isloading = true;
+    });
+    String theUrl = getMyUrl.url + 'prosses/topbarang';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "arus": "2"
+    });
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          topkeluardateJSON = json.decode(res.body);
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print(topkeluardateJSON);
+    }
+  }
+
   Future _cekLogout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("_isLoggedIn") == null) {
@@ -112,6 +167,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   @override
   void initState() {
     getSparepart();
+    topsparepartkeluar();
+    topsparepartmasuk();
     laporanbyDate();
     super.initState();
   }
@@ -132,7 +189,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
       // ),
       appBar: AppBar(
         title: Text(
-          'Pimpinan' + barangmasuk.toString(),
+          'Pimpinan',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -195,380 +252,389 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
               color: bgCOlor,
               borderRadius: BorderRadius.circular(15),
             ),
-            child: Column(
-              children: [
-                // ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
-                // ListView(
-                //   children: <Widget>[
-                cardStock(),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: mediaQueryData.size.height * 0.01,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // ListSparepart(dataJSON: dataJSON, mediaQueryData: mediaQueryData),
+                  // ListView(
+                  //   children: <Widget>[
+                  cardStock(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: mediaQueryData.size.height * 0.01,
+                    ),
                   ),
-                ),
-                // Column(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: [
-                //     Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         SizedBox(
-                //           width: mediaQueryData.size.width * 0.47,
-                //           child: Card(
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(15.0),
-                //             ),
-                //             child: Material(
-                //               color: Colors.blue,
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(15.0),
-                //               ),
-                //               child: InkWell(
-                //                 onTap: () {
-                //                   Navigator.pushNamed(
-                //                       context, '/HalMesinMekanikList');
-                //                 },
-                //                 child: Container(
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(15),
-                //                   ),
-                //                   padding: const EdgeInsets.all(10.0),
-                //                   child: Column(
-                //                     mainAxisAlignment: MainAxisAlignment.start,
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: <Widget>[
-                //                       const FaIcon(
-                //                         FontAwesomeIcons.gears,
-                //                         color: Colors.white,
-                //                         size: 35,
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Row(
-                //                         mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                         // crossAxisAlignment: CrossAxisAlignment.start,
-                //                         children: const <Widget>[
-                //                           Text(
-                //                             'List Sparepart', //IBADAH
-                //                             style: TextStyle(
-                //                               fontSize: 17,
-                //                               fontWeight: FontWeight.bold,
-                //                               color: Colors.white,
-                //                             ),
-                //                           ),
-                //                         ],
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       // const Text(
-                //                       //   "Sparepart",
-                //                       //   style: TextStyle(
-                //                       //     fontSize: 15,
-                //                       //     color: Colors.white,
-                //                       //   ),
-                //                       // ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       Text(
-                //                         "Tap to view",
-                //                         style: TextStyle(
-                //                           fontSize: 11,
-                //                           color: Colors.white.withOpacity(0.5),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //         SizedBox(
-                //           width: mediaQueryData.size.width * 0.47,
-                //           child: Card(
-                //             shape: RoundedRectangleBorder(
-                //               borderRadius: BorderRadius.circular(15.0),
-                //             ),
-                //             child: Material(
-                //               color: Colors.purple,
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(15.0),
-                //               ),
-                //               child: InkWell(
-                //                 onTap: () {
-                //                   Navigator.pushNamed(
-                //                       context, '/HalRequestMekanikList');
-                //                 },
-                //                 child: Container(
-                //                   decoration: BoxDecoration(
-                //                     borderRadius: BorderRadius.circular(15),
-                //                   ),
-                //                   padding: const EdgeInsets.all(10.0),
-                //                   child: Column(
-                //                     mainAxisAlignment: MainAxisAlignment.start,
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: <Widget>[
-                //                       const FaIcon(
-                //                         FontAwesomeIcons.boxesStacked,
-                //                         color: Colors.white,
-                //                         size: 35,
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.02,
-                //                         ),
-                //                       ),
-                //                       Row(
-                //                         mainAxisAlignment:
-                //                             MainAxisAlignment.spaceBetween,
-                //                         // crossAxisAlignment: CrossAxisAlignment.start,
-                //                         children: const <Widget>[
-                //                           Text(
-                //                             'List Request', //IBADAH
-                //                             style: TextStyle(
-                //                               fontSize: 17,
-                //                               fontWeight: FontWeight.bold,
-                //                               color: Colors.white,
-                //                             ),
-                //                           ),
-                //                         ],
-                //                       ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       // const Text(
-                //                       //   "List Request",
-                //                       //   style: TextStyle(
-                //                       //     fontSize: 15,
-                //                       //     color: Colors.white,
-                //                       //   ),
-                //                       // ),
-                //                       Padding(
-                //                         padding: EdgeInsets.only(
-                //                           top:
-                //                               mediaQueryData.size.height * 0.01,
-                //                         ),
-                //                       ),
-                //                       Text(
-                //                         "Tap to view",
-                //                         style: TextStyle(
-                //                           fontSize: 11,
-                //                           color: Colors.white.withOpacity(0.5),
-                //                         ),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ],
-                //     )
-                //   ],
-                // ),
-                Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: Material(
-                              color: Colors.green,
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       crossAxisAlignment: CrossAxisAlignment.center,
+                  //       children: [
+                  //         SizedBox(
+                  //           width: mediaQueryData.size.width * 0.47,
+                  //           child: Card(
+                  //             shape: RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.circular(15.0),
+                  //             ),
+                  //             child: Material(
+                  //               color: Colors.blue,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(15.0),
+                  //               ),
+                  //               child: InkWell(
+                  //                 onTap: () {
+                  //                   Navigator.pushNamed(
+                  //                       context, '/HalMesinMekanikList');
+                  //                 },
+                  //                 child: Container(
+                  //                   decoration: BoxDecoration(
+                  //                     borderRadius: BorderRadius.circular(15),
+                  //                   ),
+                  //                   padding: const EdgeInsets.all(10.0),
+                  //                   child: Column(
+                  //                     mainAxisAlignment: MainAxisAlignment.start,
+                  //                     crossAxisAlignment:
+                  //                         CrossAxisAlignment.start,
+                  //                     children: <Widget>[
+                  //                       const FaIcon(
+                  //                         FontAwesomeIcons.gears,
+                  //                         color: Colors.white,
+                  //                         size: 35,
+                  //                       ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.02,
+                  //                         ),
+                  //                       ),
+                  //                       Row(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.spaceBetween,
+                  //                         // crossAxisAlignment: CrossAxisAlignment.start,
+                  //                         children: const <Widget>[
+                  //                           Text(
+                  //                             'List Sparepart', //IBADAH
+                  //                             style: TextStyle(
+                  //                               fontSize: 17,
+                  //                               fontWeight: FontWeight.bold,
+                  //                               color: Colors.white,
+                  //                             ),
+                  //                           ),
+                  //                         ],
+                  //                       ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.01,
+                  //                         ),
+                  //                       ),
+                  //                       // const Text(
+                  //                       //   "Sparepart",
+                  //                       //   style: TextStyle(
+                  //                       //     fontSize: 15,
+                  //                       //     color: Colors.white,
+                  //                       //   ),
+                  //                       // ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.01,
+                  //                         ),
+                  //                       ),
+                  //                       Text(
+                  //                         "Tap to view",
+                  //                         style: TextStyle(
+                  //                           fontSize: 11,
+                  //                           color: Colors.white.withOpacity(0.5),
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           width: mediaQueryData.size.width * 0.47,
+                  //           child: Card(
+                  //             shape: RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.circular(15.0),
+                  //             ),
+                  //             child: Material(
+                  //               color: Colors.purple,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(15.0),
+                  //               ),
+                  //               child: InkWell(
+                  //                 onTap: () {
+                  //                   Navigator.pushNamed(
+                  //                       context, '/HalRequestMekanikList');
+                  //                 },
+                  //                 child: Container(
+                  //                   decoration: BoxDecoration(
+                  //                     borderRadius: BorderRadius.circular(15),
+                  //                   ),
+                  //                   padding: const EdgeInsets.all(10.0),
+                  //                   child: Column(
+                  //                     mainAxisAlignment: MainAxisAlignment.start,
+                  //                     crossAxisAlignment:
+                  //                         CrossAxisAlignment.start,
+                  //                     children: <Widget>[
+                  //                       const FaIcon(
+                  //                         FontAwesomeIcons.boxesStacked,
+                  //                         color: Colors.white,
+                  //                         size: 35,
+                  //                       ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.02,
+                  //                         ),
+                  //                       ),
+                  //                       Row(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.spaceBetween,
+                  //                         // crossAxisAlignment: CrossAxisAlignment.start,
+                  //                         children: const <Widget>[
+                  //                           Text(
+                  //                             'List Request', //IBADAH
+                  //                             style: TextStyle(
+                  //                               fontSize: 17,
+                  //                               fontWeight: FontWeight.bold,
+                  //                               color: Colors.white,
+                  //                             ),
+                  //                           ),
+                  //                         ],
+                  //                       ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.01,
+                  //                         ),
+                  //                       ),
+                  //                       // const Text(
+                  //                       //   "List Request",
+                  //                       //   style: TextStyle(
+                  //                       //     fontSize: 15,
+                  //                       //     color: Colors.white,
+                  //                       //   ),
+                  //                       // ),
+                  //                       Padding(
+                  //                         padding: EdgeInsets.only(
+                  //                           top:
+                  //                               mediaQueryData.size.height * 0.01,
+                  //                         ),
+                  //                       ),
+                  //                       Text(
+                  //                         "Tap to view",
+                  //                         style: TextStyle(
+                  //                           fontSize: 11,
+                  //                           color: Colors.white.withOpacity(0.5),
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     )
+                  //   ],
+                  // ),
+                  Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: mediaQueryData.size.width * 0.475,
+                            child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/HalPimpinanLaporanSparepart');
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const FaIcon(
-                                        FontAwesomeIcons.fileLines,
-                                        color: Colors.white,
-                                        size: 35,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          top:
-                                              mediaQueryData.size.height * 0.02,
+                              child: Material(
+                                color: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context,
+                                        '/HalPimpinanLaporanSparepart');
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const FaIcon(
+                                          FontAwesomeIcons.fileLines,
+                                          color: Colors.white,
+                                          size: 35,
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: const <Widget>[
-                                          Text(
-                                            'Laporan Sparepart', //IBADAH
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
                                           ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          top:
-                                              mediaQueryData.size.height * 0.02,
                                         ),
-                                      ),
-                                      // const Text(
-                                      //   "Request",
-                                      //   style: TextStyle(
-                                      //     fontSize: 15,
-                                      //     color: Colors.white,
-                                      //   ),
-                                      // ),
-                                      // Padding(
-                                      //   padding: EdgeInsets.only(
-                                      //     top:
-                                      //         mediaQueryData.size.height * 0.02,
-                                      //   ),
-                                      // ),
-                                      Text(
-                                        "Tap to view",
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.white.withOpacity(0.5),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          // crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Text(
+                                              'Laporan Sparepart', //IBADAH
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
+                                          ),
+                                        ),
+                                        // const Text(
+                                        //   "Request",
+                                        //   style: TextStyle(
+                                        //     fontSize: 15,
+                                        //     color: Colors.white,
+                                        //   ),
+                                        // ),
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //     top:
+                                        //         mediaQueryData.size.height * 0.02,
+                                        //   ),
+                                        // ),
+                                        Text(
+                                          "Tap to view",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            child: Material(
-                              color: Colors.blue,
+                          SizedBox(
+                            width: mediaQueryData.size.width * 0.475,
+                            child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/HalPimpinanLaporanRequest');
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      const FaIcon(
-                                        FontAwesomeIcons.fileImport,
-                                        color: Colors.white,
-                                        size: 35,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          top:
-                                              mediaQueryData.size.height * 0.02,
+                              child: Material(
+                                color: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, '/HalPimpinanLaporanRequest');
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const FaIcon(
+                                          FontAwesomeIcons.fileImport,
+                                          color: Colors.white,
+                                          size: 35,
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        // crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: const <Widget>[
-                                          Text(
-                                            'Laporan Request', //IBADAH
-                                            style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
                                           ),
-                                        ],
-                                      ),
-                                      // Padding(
-                                      //   padding: EdgeInsets.only(
-                                      //     top:
-                                      //         mediaQueryData.size.height * 0.01,
-                                      //   ),
-                                      // ),
-                                      // const Text(
-                                      //   "Mesin",
-                                      //   style: TextStyle(
-                                      //     fontSize: 15,
-                                      //     color: Colors.white,
-                                      //   ),
-                                      // ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          top:
-                                              mediaQueryData.size.height * 0.02,
                                         ),
-                                      ),
-                                      Text(
-                                        "Tap to view",
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.white.withOpacity(0.5),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          // crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Text(
+                                              'Laporan Request', //IBADAH
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //     top:
+                                        //         mediaQueryData.size.height * 0.01,
+                                        //   ),
+                                        // ),
+                                        // const Text(
+                                        //   "Mesin",
+                                        //   style: TextStyle(
+                                        //     fontSize: 15,
+                                        //     color: Colors.white,
+                                        //   ),
+                                        // ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Tap to view",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ],
+                        ],
+                      )
+                    ],
+                  ),
+
+                  _topsparepartmasuk(),
+                  _topsparepartkeluar(),
+                ],
+              ),
             ),
             //   ],
             // ),
@@ -582,162 +648,187 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return isloading
         ? _buildProgressIndicator()
-        : SizedBox(
-            height: mediaQueryData.size.height * 0.14,
+        : Container(
+            height: mediaQueryData.size.height * 0.12,
             width: mediaQueryData.size.width,
-            child: Card(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    offset: const Offset(0.0, 5.0),
+                    blurRadius: 7.0),
+              ],
+            ),
+            child: Material(
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
-              child: Material(
-                color: Colors.orange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$barangmasuk",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                "$barangmasuk",
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Barang\nMasuk',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$barangkeluar",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'Barang\nMasuk',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Barang\nKeluar',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$barangreturn",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                "$barangkeluar",
+                                style: const TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Barang\nReturn',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        const Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$reqproses",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'Barang\nKeluar',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Request\nProses',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$reqselesai",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                "$barangreturn",
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Request\nSelesai',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(
-                                  "$reqtotal",
-                                  style: const TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25.0,
-                                  ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'Barang\nReturn',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
                                 ),
-                                const SizedBox(width: 8.0),
-                                const Text(
-                                  'Request\nTotal',
-                                  style: TextStyle(
-                                    color: Color(0xFF2e2e2e),
-                                    fontSize: 13.0,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                "$reqproses",
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              const Text(
+                                'Request\nProses',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      // const Divider(),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     Row(
+                      //       children: <Widget>[
+                      //         Text(
+                      //           "$reqproses",
+                      //           style: const TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 25.0,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(width: 8.0),
+                      //         const Text(
+                      //           'Request\nProses',
+                      //           style: TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontSize: 13.0,
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //     Row(
+                      //       children: <Widget>[
+                      //         Text(
+                      //           "$reqselesai",
+                      //           style: const TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 25.0,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(width: 8.0),
+                      //         const Text(
+                      //           'Request\nSelesai',
+                      //           style: TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontSize: 13.0,
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //     Row(
+                      //       children: <Widget>[
+                      //         Text(
+                      //           "$reqtotal",
+                      //           style: const TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontWeight: FontWeight.bold,
+                      //             fontSize: 25.0,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(width: 8.0),
+                      //         const Text(
+                      //           'Request\nTotal',
+                      //           style: TextStyle(
+                      //             color: Color(0xFF2e2e2e),
+                      //             fontSize: 13.0,
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ],
+                      // )
+                    ],
                   ),
                 ),
               ),
@@ -779,6 +870,780 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _topsparepartmasuk() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return _isLoggedIn
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            padding: EdgeInsets.only(
+              // left: mediaQueryData.size.height * 0.005,
+              // right: mediaQueryData.size.height * 0.005,
+              // bottom: mediaQueryData.size.height * 0.01,
+              top: mediaQueryData.size.height * 0.01,
+            ),
+            child: Card(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: mediaQueryData.size.height * 0.05,
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[800],
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Top Sparepart Masuk",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.open_in_new),
+                          color: Colors.white,
+                          iconSize: 25.0,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/DetailKesehatan');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  topsparepartlist(),
+                  const SizedBox(),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      bottom: mediaQueryData.size.height * 0.01,
+                      top: mediaQueryData.size.height * 0.01,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: <Widget>[
+                          const Icon(
+                            Icons.info_outline,
+                            size: 12,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.005),
+                          ),
+                          const Text(
+                            'Data Sparepart',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ]),
+                        Text(
+                          formatedTanggal.toString(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Widget _topsparepartkeluar() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return _isLoggedIn
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            padding: EdgeInsets.only(
+              // left: mediaQueryData.size.height * 0.005,
+              // right: mediaQueryData.size.height * 0.005,
+              // bottom: mediaQueryData.size.height * 0.01,
+              top: mediaQueryData.size.height * 0.01,
+            ),
+            child: Card(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: mediaQueryData.size.height * 0.05,
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Top Sparepart Keluar",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.open_in_new),
+                          color: Colors.white,
+                          iconSize: 25.0,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/DetailKesehatan');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  topsparepartlistkeluar(),
+                  const SizedBox(),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      bottom: mediaQueryData.size.height * 0.01,
+                      top: mediaQueryData.size.height * 0.01,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: <Widget>[
+                          const Icon(
+                            Icons.info_outline,
+                            size: 12,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.005),
+                          ),
+                          const Text(
+                            'Data Sparepart',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ]),
+                        Text(
+                          formatedTanggal.toString(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Widget topsparepartlist() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: topmasukdateJSON == null ? 0 : topmasukdateJSON?.length,
+      itemBuilder: (BuildContext context, int i) {
+        if (topmasukdateJSON?[i]["id"] == "NotFound") {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.notes_sharp,
+                  size: 150,
+                  color: Colors.grey[300],
+                ),
+                Text(
+                  "Tidak ada Sparepart",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.grey[300],
+                  ),
+                )
+              ],
+            ),
+          );
+        } else {
+          var arus;
+          if (topmasukdateJSON?[i]["arus"] == '1') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.inbox,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Masuk",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else if (topmasukdateJSON?[i]["arus"] == '2') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.outbox_rounded,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Keluar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.settings_backup_restore_sharp,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Return",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(
+            padding: EdgeInsets.only(
+              top: mediaQueryData.size.height * 0.01,
+              left: mediaQueryData.size.height * 0.01,
+              right: mediaQueryData.size.height * 0.01,
+              bottom: mediaQueryData.size.height * 0.005,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  // elevation: 1.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //       color: Colors.black.withOpacity(0.1),
+                    //       offset: const Offset(0.0, 5.0),
+                    //       blurRadius: 5.0),
+                    // ],
+                  ),
+                  child: Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => DetailSparepart(
+                        //       dId: _foundUsers[index]["id"],
+                        //     ),
+                        //   ),
+                        // ).then((value) => getSparepart());
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(right: 15.0),
+                            width: mediaQueryData.size.height * 0.15,
+                            height: mediaQueryData.size.height * 0.11,
+                            child: topmasukdateJSON?[i]['foto'] != null
+                                ? CachedNetworkImage(
+                                    imageUrl: topmasukdateJSON?[i]['foto'],
+                                    placeholder: (context, url) => Container(
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                            "assets/logo/22.png",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    height: 150.0,
+                                    width: 110.0,
+                                  )
+                                : Image.asset(
+                                    'assets/logo/22.png',
+                                    // width: mediaQueryData.size.height * 0.7,
+                                    // height: mediaQueryData.size.width * 0.7,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          // SizedBox(
+                          //   width: mediaQueryData.size.width * 0.02,
+                          // ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 5.0, bottom: 10.0),
+                                  child: Text(
+                                    topmasukdateJSON?[i]['sperpart'],
+                                    style: const TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      //fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                arus,
+                                // Container(
+                                //   margin: const EdgeInsets.only(bottom: 10.0),
+                                //   child: topkeluardateJSON?[i]['sperpart'] !=
+                                //           null
+                                //       ? Text(
+                                //           'Mesin : ' +
+                                //               topkeluardateJSON?[i]['sperpart'],
+                                //           style: const TextStyle(
+                                //             fontSize: 13.0,
+                                //             color: Colors.black,
+                                //             // fontWeight: FontWeight.bold,
+                                //             //fontWeight: FontWeight.normal,
+                                //           ),
+                                //         )
+                                //       : const Text(
+                                //           '-',
+                                //           style: TextStyle(
+                                //             fontSize: 13.0,
+                                //             color: Colors.black,
+                                //             // fontWeight: FontWeight.bold,
+                                //             //fontWeight: FontWeight.normal,
+                                //           ),
+                                //         ),
+                                // ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 5.0),
+                                  child: topmasukdateJSON?[i]['jumlah'] != null
+                                      ? Text(
+                                          'Jumlah : ' +
+                                              topmasukdateJSON?[i]['jumlah'],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider()
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget topsparepartlistkeluar() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: topkeluardateJSON == null ? 0 : topkeluardateJSON?.length,
+      itemBuilder: (BuildContext context, int i) {
+        if (topkeluardateJSON?[i]["id"] == "NotFound") {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.notes_sharp,
+                  size: 150,
+                  color: Colors.grey[300],
+                ),
+                Text(
+                  "Tidak ada Sparepart",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.grey[300],
+                  ),
+                )
+              ],
+            ),
+          );
+        } else {
+          var arus;
+          if (topkeluardateJSON?[i]["arus"] == '1') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.inbox,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Masuk",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else if (topkeluardateJSON?[i]["arus"] == '2') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.outbox_rounded,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Keluar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.settings_backup_restore_sharp,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Return",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(
+            padding: EdgeInsets.only(
+              top: mediaQueryData.size.height * 0.01,
+              left: mediaQueryData.size.height * 0.01,
+              right: mediaQueryData.size.height * 0.01,
+              bottom: mediaQueryData.size.height * 0.005,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  // elevation: 1.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //       color: Colors.black.withOpacity(0.1),
+                    //       offset: const Offset(0.0, 5.0),
+                    //       blurRadius: 5.0),
+                    // ],
+                  ),
+                  child: Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => DetailSparepart(
+                        //       dId: _foundUsers[index]["id"],
+                        //     ),
+                        //   ),
+                        // ).then((value) => getSparepart());
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(right: 15.0),
+                            width: mediaQueryData.size.height * 0.15,
+                            height: mediaQueryData.size.height * 0.11,
+                            child: topmasukdateJSON?[i]['foto'] != null
+                                ? CachedNetworkImage(
+                                    imageUrl: topkeluardateJSON?[i]['foto'],
+                                    placeholder: (context, url) => Container(
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                            "assets/logo/22.png",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    height: 150.0,
+                                    width: 110.0,
+                                  )
+                                : Image.asset(
+                                    'assets/logo/22.png',
+                                    // width: mediaQueryData.size.height * 0.7,
+                                    // height: mediaQueryData.size.width * 0.7,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          // SizedBox(
+                          //   width: mediaQueryData.size.width * 0.02,
+                          // ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 5.0, bottom: 10.0),
+                                  child: Text(
+                                    topkeluardateJSON?[i]['sperpart'],
+                                    style: const TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      //fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                arus,
+                                // Container(
+                                //   margin: const EdgeInsets.only(bottom: 10.0),
+                                //   child: topkeluardateJSON?[i]['sperpart'] !=
+                                //           null
+                                //       ? Text(
+                                //           'Mesin : ' +
+                                //               topkeluardateJSON?[i]['sperpart'],
+                                //           style: const TextStyle(
+                                //             fontSize: 13.0,
+                                //             color: Colors.black,
+                                //             // fontWeight: FontWeight.bold,
+                                //             //fontWeight: FontWeight.normal,
+                                //           ),
+                                //         )
+                                //       : const Text(
+                                //           '-',
+                                //           style: TextStyle(
+                                //             fontSize: 13.0,
+                                //             color: Colors.black,
+                                //             // fontWeight: FontWeight.bold,
+                                //             //fontWeight: FontWeight.normal,
+                                //           ),
+                                //         ),
+                                // ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 5.0),
+                                  child: topkeluardateJSON?[i]['jumlah'] != null
+                                      ? Text(
+                                          'Jumlah : ' +
+                                              topkeluardateJSON?[i]['jumlah'],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider()
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 
