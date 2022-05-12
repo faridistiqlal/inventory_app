@@ -7,20 +7,26 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
-import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class HalPimpinanLaporanSparepart extends StatefulWidget {
-  const HalPimpinanLaporanSparepart({Key? key}) : super(key: key);
+class FilterPimpinanLaporanSparepart extends StatefulWidget {
+  // const FilterPimpinanLaporanSparepart({Key? key}) : super(key: key);
+  final String dTglAwal, dTglAkhir, dStatus;
+  const FilterPimpinanLaporanSparepart({
+    Key? key,
+    required this.dTglAwal,
+    required this.dTglAkhir,
+    required this.dStatus,
+  }) : super(key: key);
 
   @override
-  State<HalPimpinanLaporanSparepart> createState() =>
-      _HalPimpinanLaporanSparepartState();
+  State<FilterPimpinanLaporanSparepart> createState() =>
+      _FilterPimpinanLaporanSparepartState();
 }
 
-class _HalPimpinanLaporanSparepartState
-    extends State<HalPimpinanLaporanSparepart> {
+class _FilterPimpinanLaporanSparepartState
+    extends State<FilterPimpinanLaporanSparepart> {
   String? barangmasuk;
   String? barangkeluar;
   int? barangreturn;
@@ -58,9 +64,9 @@ class _HalPimpinanLaporanSparepartState
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
-      "tanggalawal": '',
-      "tanggalaakhir": '',
-      "status": ''
+      "tanggalawal": widget.dTglAwal.toString(),
+      "tanggalakhir": widget.dTglAkhir.toString(),
+      "status": widget.dStatus.toString(),
     });
     if (res.statusCode == 200) {
       setState(
@@ -88,22 +94,26 @@ class _HalPimpinanLaporanSparepartState
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
-      "tanggalawal": '',
-      "tanggakhir": '',
+      "tanggalawal": widget.dTglAwal.toString(),
+      "tanggalakhir": widget.dTglAkhir.toString(),
     });
     var laporanbydateJSON = json.decode(res.body);
-    if (res.statusCode == 200) {
+    if (mounted) {
       setState(
         () {
           barangmasuk = laporanbydateJSON['barangmasuk'];
           barangkeluar = laporanbydateJSON['barangkeluar'];
           barangreturn = laporanbydateJSON['barangreturn'];
-          isloading = false;
         },
       );
+      setState(() {
+        isloading = false;
+      });
     }
     if (kDebugMode) {
-      print("LaporanbyDate : ");
+      print("LaporanbyDate filter : ");
+      print(widget.dTglAwal);
+      print(widget.dTglAkhir);
       print(laporanbydateJSON);
     }
   }
@@ -126,8 +136,8 @@ class _HalPimpinanLaporanSparepartState
         "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
       },
       body: {
-        "tanggalawal": '',
-        "tanggalakhir": '',
+        "tanggalawal": widget.dTglAwal.toString(),
+        "tanggalakhir": widget.dTglAkhir.toString(),
       },
     );
     if (kDebugMode) {
@@ -162,7 +172,7 @@ class _HalPimpinanLaporanSparepartState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Laporan Sparepart',
+          'Laporan Sparepart' + widget.dTglAwal,
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -203,7 +213,7 @@ class _HalPimpinanLaporanSparepartState
       width: MediaQuery.of(context).size.width,
       height: mediaQueryData.size.height * 0.07,
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -713,113 +723,62 @@ class _HalPimpinanLaporanSparepartState
                   children: [
                     Column(
                       children: <Widget>[
-                        barangmasuk == null
-                            ? const Text(
-                                "0",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              )
-                            : Text(
-                                "$barangmasuk",
-                                style: const TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              ),
+                        Text(
+                          "$barangmasuk",
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
+                        ),
                         const SizedBox(width: 8.0),
-                        barangmasuk == null
-                            ? const Text(
-                                'Memuat..',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
-                            : const Text(
-                                'Proses',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
+                        const Text(
+                          'Proses',
+                          style: TextStyle(
+                            color: Color(0xFF2e2e2e),
+                            fontSize: 13.0,
+                          ),
+                        )
                       ],
                     ),
                     Column(
                       children: <Widget>[
-                        barangkeluar == null
-                            ? const Text(
-                                "0",
-                                style: TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              )
-                            : Text(
-                                "$barangkeluar",
-                                style: const TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              ),
+                        Text(
+                          "$barangkeluar",
+                          style: const TextStyle(
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
+                        ),
                         const SizedBox(width: 8.0),
-                        barangkeluar == null
-                            ? const Text(
-                                'Memuat..',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
-                            : const Text(
-                                'Selesai',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
+                        const Text(
+                          'Selesai',
+                          style: TextStyle(
+                            color: Color(0xFF2e2e2e),
+                            fontSize: 13.0,
+                          ),
+                        )
                       ],
                     ),
                     Column(
                       children: <Widget>[
-                        barangreturn == null
-                            ? const Text(
-                                "0",
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              )
-                            : Text(
-                                "$barangreturn",
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              ),
+                        Text(
+                          "$barangreturn",
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
+                        ),
                         const SizedBox(width: 8.0),
-                        barangreturn == null
-                            ? const Text(
-                                'Memuat..',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
-                            : const Text(
-                                'Total',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
+                        const Text(
+                          'Total',
+                          style: TextStyle(
+                            color: Color(0xFF2e2e2e),
+                            fontSize: 13.0,
+                          ),
+                        )
                       ],
                     ),
                   ],

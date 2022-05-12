@@ -10,6 +10,7 @@ import 'package:inventory_app/view/cek.dart';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:inventory_app/view/mekanik/hal_mekanik.dart';
 import 'package:inventory_app/view/mekanik/input/post_request_sparepart.dart';
+import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_request.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_sparepart.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_request.dart';
@@ -35,6 +36,12 @@ void main() {
     debugShowCheckedModeBanner: false,
     title: 'Inventory App',
     routes: <String, WidgetBuilder>{
+      '/FilterPimpinanLaporanSparepart': (BuildContext context) =>
+          const FilterPimpinanLaporanSparepart(
+            dTglAwal: '',
+            dTglAkhir: '',
+            dStatus: '',
+          ),
       '/HalAdmin': (BuildContext context) => const HalAdmin(),
       '/MyHomePage': (BuildContext context) => MyHomePage(),
       '/LoginPage': (BuildContext context) => const LoginPage(),

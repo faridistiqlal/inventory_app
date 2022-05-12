@@ -455,39 +455,6 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                       );
                               },
                             ),
-                            // FutureBuilder(
-                            //   future: loadSalesData(),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.hasError) print(snapshot.error);
-                            //     return snapshot.hasData
-                            //         ? const Center(
-                            //             child: CircularProgressIndicator(),
-                            //           )
-                            //         : SfCartesianChart(
-                            //             // legend: Legend(isVisible: true),
-                            //             primaryXAxis: CategoryAxis(),
-                            //             tooltipBehavior: _tooltipBehavior,
-                            //             // Chart title
-                            //             title: ChartTitle(
-                            //                 text: 'Half yearly sales analysis'),
-                            //             series: <
-                            //                 ChartSeries<SalesData, String>>[
-                            //               LineSeries<SalesData, String>(
-                            //                   dataSource: chartData,
-                            //                   xValueMapper:
-                            //                       (SalesData sales, _) =>
-                            //                           sales.month,
-                            //                   yValueMapper:
-                            //                       (SalesData sales, _) =>
-                            //                           sales.sales,
-                            //                   // Enable data label
-                            //                   dataLabelSettings:
-                            //                       const DataLabelSettings(
-                            //                           isVisible: true))
-                            //             ],
-                            //           );
-                            //   },
-                            // ),
                           ],
                         )
                       : cardStockfuture(),
