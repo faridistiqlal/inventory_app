@@ -47,6 +47,9 @@ dependencies:
   image_cropper: ^1.5.1
   dropdown_search: ^2.0.1
   intl: ^0.17.0
+  charts_flutter: ^0.12.0
+  datetime_picker_formfield: ^2.0.0
+  syncfusion_flutter_charts: ^20.1.52
 
 dev_dependencies:
   flutter_lints: ^1.0.0

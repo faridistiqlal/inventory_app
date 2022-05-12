@@ -6,6 +6,7 @@ import 'package:inventory_app/view/admin/detail/detail_sparepart.dart';
 import 'package:inventory_app/view/admin/hal_admin.dart';
 import 'package:inventory_app/view/admin/hal_profile_admin.dart';
 import 'package:inventory_app/view/admin/menuadmin/hal_sparepart.dart';
+import 'package:inventory_app/view/cek.dart';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:inventory_app/view/mekanik/hal_mekanik.dart';
 import 'package:inventory_app/view/mekanik/input/post_request_sparepart.dart';
@@ -35,6 +36,7 @@ void main() {
     title: 'Inventory App',
     routes: <String, WidgetBuilder>{
       '/HalAdmin': (BuildContext context) => const HalAdmin(),
+      '/MyHomePage': (BuildContext context) => MyHomePage(),
       '/LoginPage': (BuildContext context) => const LoginPage(),
       '/HalTabAdmin': (BuildContext context) => const HalTabAdmin(),
       '/HalProfilAdmin': (BuildContext context) => const HalProfilAdmin(),

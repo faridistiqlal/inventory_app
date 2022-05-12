@@ -925,7 +925,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           color: Colors.white,
                           iconSize: 25.0,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/DetailKesehatan');
+                            Navigator.pushNamed(context, '/MyHomePage');
                           },
                         ),
                       ],
