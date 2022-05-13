@@ -49,17 +49,17 @@ class _HalPimpinanLaporanSparepartState
 // ignore: unused_field
   bool _isLoggedIn = false;
 
-  Future<dynamic> laporanSparepart() async {
+  Future<dynamic> laporanRequest() async {
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporanrequest';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
       "tanggalawal": '',
-      "tanggalaakhir": '',
+      "tanggalakhir": '',
       "status": ''
     });
     if (res.statusCode == 200) {
@@ -89,7 +89,7 @@ class _HalPimpinanLaporanSparepartState
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
       "tanggalawal": '',
-      "tanggakhir": '',
+      "tanggalkhir": '',
     });
     var laporanbydateJSON = json.decode(res.body);
     if (res.statusCode == 200) {
@@ -151,7 +151,7 @@ class _HalPimpinanLaporanSparepartState
   void initState() {
     laporanbyDate();
     loadSalesData();
-    laporanSparepart();
+    laporanRequest();
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
@@ -279,23 +279,7 @@ class _HalPimpinanLaporanSparepartState
                   name: "Masuk",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.masuk,
-                  // Enable data label
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                ),
-                LineSeries<SalesData, String>(
-                  name: "Keluar",
-                  dataSource: chartData,
-                  xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.keluar,
-                  // Enable data label
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                ),
-                LineSeries<SalesData, String>(
-                  name: "Retur",
-                  dataSource: chartData,
-                  xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.retur,
+                  yValueMapper: (SalesData sales, _) => sales.jumlah,
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
@@ -836,22 +820,16 @@ class _HalPimpinanLaporanSparepartState
 class SalesData {
   SalesData(
     this.tanggal,
-    this.masuk,
-    this.keluar,
-    this.retur,
+    this.jumlah,
   );
 
   final String tanggal;
-  final int masuk;
-  final int keluar;
-  final int retur;
+  final int jumlah;
 
   factory SalesData.fromJson(Map<String, dynamic> parsedJson) {
     return SalesData(
       parsedJson['tanggal'].toString(),
-      int.parse(parsedJson['masuk']),
-      int.parse(parsedJson['keluar']),
-      int.parse(parsedJson['retur']),
+      int.parse(parsedJson['jumlah']),
     );
   }
 }
