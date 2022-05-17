@@ -50,8 +50,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
       // "tanggal": formatedTanggal.toString(),
-      "tanggalawal": '',
-      "tanggakhir": '',
+      "tanggalawal": 'all',
+      "tanggakhir": 'all',
     });
     var laporanbydateJSON = json.decode(res.body);
     if (res.statusCode == 200) {

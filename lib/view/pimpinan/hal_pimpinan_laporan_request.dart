@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
+import 'package:inventory_app/view/pimpinan/detail/detail_filter_request.dart';
 import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -24,7 +25,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
   int? reqselesai;
   int? reqtotal;
   List<SalesData> chartData = [];
-  List? laporansparepartJSON;
+  List? laporanrequestJSON;
   late TooltipBehavior _tooltipBehavior;
   String? cStatus;
   TextEditingController cTglAwal = TextEditingController();
@@ -52,7 +53,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporanrequest';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
@@ -64,7 +65,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     if (res.statusCode == 200) {
       setState(
         () {
-          laporansparepartJSON = json.decode(res.body);
+          laporanrequestJSON = json.decode(res.body);
         },
       );
       setState(() {
@@ -73,7 +74,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     }
     if (kDebugMode) {
       print("Laporan Sparepart :");
-      print(laporansparepartJSON);
+      print(laporanrequestJSON);
     }
   }
 
@@ -117,7 +118,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporansperpart";
+        "http://inventory.akses-yt.id/api/prosses/grafiklaporanrequest";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -161,7 +162,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Laporan Sparepart',
+          'Laporan Request',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -206,7 +207,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => FilterPimpinanLaporanSparepart(
+              builder: (context) => FilterPimpinanLaporanRequest(
                 dTglAwal: cTglAwal.text,
                 dTglAkhir: cTglAkhir.text,
                 dStatus: cStatus.toString(),
@@ -241,7 +242,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: ExpansionTile(
-        title: const Text("Filter Sparepart",
+        title: const Text("Filter Request",
             style: TextStyle(
               color: Colors.white,
             )),
@@ -315,10 +316,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
-      itemCount:
-          laporansparepartJSON == null ? 0 : laporansparepartJSON?.length,
+      itemCount: laporanrequestJSON == null ? 0 : laporanrequestJSON?.length,
       itemBuilder: (BuildContext context, int i) {
-        if (laporansparepartJSON?[i]["id"] == 'NotFound') {
+        if (laporanrequestJSON?[i]["id"] == 'NotFound') {
           return Center(
             child: Column(
               children: <Widget>[
@@ -344,6 +344,74 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
             ),
           );
         } else {
+          var status;
+          if (laporanrequestJSON?[i]["status"] == "Selesai") {
+            status = Material(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.green[800],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.012,
+                      right: mediaQueryData.size.height * 0.012,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    icon: const Icon(Icons.done),
+                    color: Colors.white,
+                    iconSize: 50.0,
+                    onPressed: () {
+                      // Navigator.pushNamed(context, '/DetailSurat');
+                    },
+                  ),
+                  Text(
+                    laporanrequestJSON?[i]["status"],
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white,
+                      // fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            status = Material(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.orange,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.012,
+                      right: mediaQueryData.size.height * 0.012,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    icon: const Icon(Icons.watch_later_outlined),
+                    color: Colors.white,
+                    iconSize: 50.0,
+                    onPressed: () {
+                      // Navigator.pushNamed(context, '/DetailSurat');
+                    },
+                  ),
+                  Text(
+                    laporanrequestJSON?[i]["status"],
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white,
+                      // fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
           return Container(
             padding: EdgeInsets.only(
               top: mediaQueryData.size.height * 0.01,
@@ -372,31 +440,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                     children: <Widget>[
                       SizedBox(
                         // margin: const EdgeInsets.only(right: 15.0),
-                        width: mediaQueryData.size.height * 0.15,
-                        height: mediaQueryData.size.height * 0.12,
-                        child: laporansparepartJSON?[i]["foto"] != null
-                            ? CachedNetworkImage(
-                                imageUrl: laporansparepartJSON?[i]["foto"],
-                                placeholder: (context, url) => Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/logo/22.png",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                fit: BoxFit.cover,
-                                height: 150.0,
-                                width: 110.0,
-                              )
-                            : Image.asset(
-                                'assets/logo/22.png',
-                                // width: mediaQueryData.size.height * 0.7,
-                                // height: mediaQueryData.size.width * 0.7,
-                                fit: BoxFit.cover,
-                              ),
+                        width: mediaQueryData.size.height * 0.12,
+                        height: mediaQueryData.size.height * 0.15,
+                        child: status,
                       ),
                       SizedBox(
                         width: mediaQueryData.size.width * 0.02,
@@ -406,12 +452,45 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
+                              padding: EdgeInsets.only(
+                                top: mediaQueryData.size.height * 0.005,
+                                left: mediaQueryData.size.height * 0.005,
+                                right: mediaQueryData.size.height * 0.005,
+                                bottom: mediaQueryData.size.height * 0.005,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.green[600],
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.numbers,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
+                                  SizedBox(
+                                    width: mediaQueryData.size.height * 0.01,
+                                  ),
+                                  Text(
+                                    laporanrequestJSON?[i]["kodereq"],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                laporansparepartJSON?[i]["sperpart"],
+                                laporanrequestJSON?[i]["sperpart"],
                                 style: const TextStyle(
-                                  fontSize: 15.0,
+                                  fontSize: 13.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   //fontWeight: FontWeight.normal,
@@ -420,10 +499,10 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporansparepartJSON?[i]["mesin"] != null
+                              child: laporanrequestJSON?[i]["mesin"] != null
                                   ? Text(
                                       'Mesin : ' +
-                                          laporansparepartJSON?[i]["mesin"],
+                                          laporanrequestJSON?[i]["mesin"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.green,
@@ -443,10 +522,12 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporansparepartJSON?[i]["tanggal"] != null
+                              child: laporanrequestJSON?[i]["tanggal"] != null
                                   ? Text(
                                       "Tanggal : " +
-                                          laporansparepartJSON?[i]["tanggal"],
+                                          laporanrequestJSON?[i]["tanggal"] +
+                                          " " +
+                                          laporanrequestJSON?[i]["jam"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -469,36 +550,38 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(bottom: 5.0),
-                                  child:
-                                      laporansparepartJSON?[i]["jumlah"] != null
-                                          ? Text(
-                                              'Jumlah : ' +
-                                                  laporansparepartJSON?[i]
-                                                      ["jumlah"],
-                                              style: const TextStyle(
-                                                fontSize: 13.0,
-                                                color: Colors.orange,
-                                                fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
-                                              ),
-                                            )
-                                          : const Text(
-                                              '-',
-                                              style: TextStyle(
-                                                fontSize: 13.0,
-                                                color: Colors.black,
-                                                // fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
+                                  child: laporanrequestJSON?[i]["jumlah"] !=
+                                          null
+                                      ? Text(
+                                          'Jumlah : ' +
+                                              laporanrequestJSON?[i]["jumlah"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(
                                       right: 5.0, bottom: 5.0),
-                                  child: laporansparepartJSON?[i]["jam"] != null
+                                  child: laporanrequestJSON?[i]
+                                              ["kodesperpart"] !=
+                                          null
                                       ? Text(
-                                          'Jam : ' +
-                                              laporansparepartJSON?[i]["jam"],
+                                          'Kode : ' +
+                                              laporanrequestJSON?[i]
+                                                  ["kodesperpart"],
                                           style: const TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.blue,

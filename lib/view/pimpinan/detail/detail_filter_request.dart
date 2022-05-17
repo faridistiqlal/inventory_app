@@ -7,26 +7,31 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
-import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class HalPimpinanLaporanSparepart extends StatefulWidget {
-  const HalPimpinanLaporanSparepart({Key? key}) : super(key: key);
+class FilterPimpinanLaporanRequest extends StatefulWidget {
+  // const FilterPimpinanLaporanRequest({Key? key}) : super(key: key);
+  final String dTglAwal, dTglAkhir, dStatus;
+  const FilterPimpinanLaporanRequest({
+    Key? key,
+    required this.dTglAwal,
+    required this.dTglAkhir,
+    required this.dStatus,
+  }) : super(key: key);
 
   @override
-  State<HalPimpinanLaporanSparepart> createState() =>
-      _HalPimpinanLaporanSparepartState();
+  State<FilterPimpinanLaporanRequest> createState() =>
+      _FilterPimpinanLaporanRequestState();
 }
 
-//CEK
-class _HalPimpinanLaporanSparepartState
-    extends State<HalPimpinanLaporanSparepart> {
-  int? barangmasuk;
-  int? barangkeluar;
-  int? barangreturn;
+class _FilterPimpinanLaporanRequestState
+    extends State<FilterPimpinanLaporanRequest> {
+  int? reqproses;
+  int? reqselesai;
+  int? reqtotal;
   List<SalesData> chartData = [];
-  List? laporansparepartJSON;
+  List? laporanrequestJSON;
   late TooltipBehavior _tooltipBehavior;
   String? cStatus;
   TextEditingController cTglAwal = TextEditingController();
@@ -38,40 +43,35 @@ class _HalPimpinanLaporanSparepartState
       "status": 'Semua',
     },
     {
-      "id": '1',
-      "status": 'Masuk',
-    },
-    {
-      "id": '2',
-      "status": 'Keluar',
-    },
-    {
       "id": '3',
-      "status": 'Return',
+      "status": 'Proses',
+    },
+    {
+      "id": '4',
+      "status": 'Selesai',
     },
   ];
   var isloading = false;
 // ignore: unused_field
   bool _isLoggedIn = false;
 
-//NOTE API Laporan Request
   Future<dynamic> laporanRequest() async {
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporansperpart';
+    String theUrl = getMyUrl.url + 'prosses/laporanrequest';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
-      "tanggalawal": '',
-      "tanggalakhir": '',
-      "status": ''
+      "tanggalawal": widget.dTglAwal.toString(),
+      "tanggalakhir": widget.dTglAkhir.toString(),
+      "status": widget.dStatus.toString(),
     });
     if (res.statusCode == 200) {
       setState(
         () {
-          laporansparepartJSON = json.decode(res.body);
+          laporanrequestJSON = json.decode(res.body);
         },
       );
       setState(() {
@@ -79,8 +79,8 @@ class _HalPimpinanLaporanSparepartState
       });
     }
     if (kDebugMode) {
-      print("Laporan Sparepart :");
-      print(laporansparepartJSON);
+      print("Laporan Request :");
+      print(laporanrequestJSON);
     }
   }
 
@@ -94,22 +94,26 @@ class _HalPimpinanLaporanSparepartState
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
-      "tanggalawal": '',
-      "tanggalakhir": '',
+      "tanggalawal": widget.dTglAwal.toString(),
+      "tanggalakhir": widget.dTglAkhir.toString(),
     });
     var laporanbydateJSON = json.decode(res.body);
-    if (res.statusCode == 200) {
+    if (mounted) {
       setState(
         () {
-          barangmasuk = laporanbydateJSON['barangmasuk'];
-          barangkeluar = laporanbydateJSON['barangkeluar'];
-          barangreturn = laporanbydateJSON['barangreturn'];
-          isloading = false;
+          reqproses = laporanbydateJSON['reqproses'];
+          reqselesai = laporanbydateJSON['reqselesai'];
+          reqtotal = laporanbydateJSON['reqtotal'];
         },
       );
+      setState(() {
+        isloading = false;
+      });
     }
     if (kDebugMode) {
-      print("LaporanbyDate : ");
+      print("LaporanbyDate filter : ");
+      print(widget.dTglAwal);
+      print(widget.dTglAkhir);
       print(laporanbydateJSON);
     }
   }
@@ -124,7 +128,7 @@ class _HalPimpinanLaporanSparepartState
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporansperpart";
+        "http://inventory.akses-yt.id/api/prosses/grafiklaporanrequest";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -132,8 +136,8 @@ class _HalPimpinanLaporanSparepartState
         "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
       },
       body: {
-        "tanggalawal": '',
-        "tanggalakhir": '',
+        "tanggalawal": widget.dTglAwal.toString(),
+        "tanggalakhir": widget.dTglAkhir.toString(),
       },
     );
     if (kDebugMode) {
@@ -168,7 +172,7 @@ class _HalPimpinanLaporanSparepartState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Laporan Sparepart',
+          'Laporan Request',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -209,11 +213,11 @@ class _HalPimpinanLaporanSparepartState
       width: MediaQuery.of(context).size.width,
       height: mediaQueryData.size.height * 0.07,
       child: ElevatedButton(
-        onPressed: () async {
+        onPressed: () {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => FilterPimpinanLaporanSparepart(
+              builder: (context) => FilterPimpinanLaporanRequest(
                 dTglAwal: cTglAwal.text,
                 dTglAkhir: cTglAkhir.text,
                 dStatus: cStatus.toString(),
@@ -248,7 +252,7 @@ class _HalPimpinanLaporanSparepartState
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: ExpansionTile(
-        title: const Text("Filter Sparepart",
+        title: const Text("Filter Request",
             style: TextStyle(
               color: Colors.white,
             )),
@@ -279,16 +283,32 @@ class _HalPimpinanLaporanSparepartState
               primaryXAxis: CategoryAxis(),
               tooltipBehavior: _tooltipBehavior,
               // Chart title
-              title: ChartTitle(text: 'Laporan Sparepart'),
+              title: ChartTitle(text: 'Laporan Request'),
               series: <ChartSeries<SalesData, String>>[
                 LineSeries<SalesData, String>(
-                  name: "Masuk",
+                  name: "Jumlah",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.jumlah,
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
+                // LineSeries<SalesData, String>(
+                //   name: "Keluar",
+                //   dataSource: chartData,
+                //   xValueMapper: (SalesData sales, _) => sales.tanggal,
+                //   yValueMapper: (SalesData sales, _) => sales.keluar,
+                //   // Enable data label
+                //   dataLabelSettings: const DataLabelSettings(isVisible: true),
+                // ),
+                // LineSeries<SalesData, String>(
+                //   name: "Retur",
+                //   dataSource: chartData,
+                //   xValueMapper: (SalesData sales, _) => sales.tanggal,
+                //   yValueMapper: (SalesData sales, _) => sales.retur,
+                //   // Enable data label
+                //   dataLabelSettings: const DataLabelSettings(isVisible: true),
+                // ),
               ],
             );
           } else {
@@ -306,10 +326,9 @@ class _HalPimpinanLaporanSparepartState
     return ListView.builder(
       physics: const ClampingScrollPhysics(),
       shrinkWrap: true,
-      itemCount:
-          laporansparepartJSON == null ? 0 : laporansparepartJSON?.length,
+      itemCount: laporanrequestJSON == null ? 0 : laporanrequestJSON?.length,
       itemBuilder: (BuildContext context, int i) {
-        if (laporansparepartJSON?[i]["id"] == 'NotFound') {
+        if (laporanrequestJSON?[i]["id"] == 'NotFound') {
           return Center(
             child: Column(
               children: <Widget>[
@@ -336,112 +355,70 @@ class _HalPimpinanLaporanSparepartState
           );
         } else {
           var status;
-          if (laporansparepartJSON?[i]["arus"] == "Masuk") {
-            status = Container(
-              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: mediaQueryData.size.height * 0.005,
-                  left: mediaQueryData.size.height * 0.005,
-                  right: mediaQueryData.size.height * 0.005,
-                  bottom: mediaQueryData.size.height * 0.005,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green[600],
-                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.inbox,
+          if (laporanrequestJSON?[i]["status"] == "Selesai") {
+            status = Material(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.green[800],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.012,
+                      right: mediaQueryData.size.height * 0.012,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    icon: const Icon(Icons.done),
+                    color: Colors.white,
+                    iconSize: 50.0,
+                    onPressed: () {
+                      // Navigator.pushNamed(context, '/DetailSurat');
+                    },
+                  ),
+                  Text(
+                    laporanrequestJSON?[i]["status"],
+                    style: const TextStyle(
+                      fontSize: 12.0,
                       color: Colors.white,
-                      size: 14,
+                      // fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.normal,
                     ),
-                    SizedBox(
-                      width: mediaQueryData.size.height * 0.01,
-                    ),
-                    Text(
-                      laporansparepartJSON?[i]["arus"],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13.0,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
-          } else if (laporansparepartJSON?[i]["arus"] == "Keluar") {
-            status = Container(
-              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: mediaQueryData.size.height * 0.005,
-                  left: mediaQueryData.size.height * 0.005,
-                  right: mediaQueryData.size.height * 0.005,
-                  bottom: mediaQueryData.size.height * 0.005,
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.outbox,
+          } else {
+            status = Material(
+              borderRadius: BorderRadius.circular(5.0),
+              color: Colors.orange,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.012,
+                      right: mediaQueryData.size.height * 0.012,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    icon: const Icon(Icons.watch_later_outlined),
+                    color: Colors.white,
+                    iconSize: 50.0,
+                    onPressed: () {
+                      // Navigator.pushNamed(context, '/DetailSurat');
+                    },
+                  ),
+                  Text(
+                    laporanrequestJSON?[i]["status"],
+                    style: const TextStyle(
+                      fontSize: 12.0,
                       color: Colors.white,
-                      size: 14,
+                      // fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.normal,
                     ),
-                    SizedBox(
-                      width: mediaQueryData.size.height * 0.01,
-                    ),
-                    Text(
-                      laporansparepartJSON?[i]["arus"],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13.0,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else if (laporansparepartJSON?[i]["arus"] == "Return") {
-            status = Container(
-              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
-              child: Container(
-                padding: EdgeInsets.only(
-                  top: mediaQueryData.size.height * 0.005,
-                  left: mediaQueryData.size.height * 0.005,
-                  right: mediaQueryData.size.height * 0.005,
-                  bottom: mediaQueryData.size.height * 0.005,
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.undo,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                    SizedBox(
-                      width: mediaQueryData.size.height * 0.01,
-                    ),
-                    Text(
-                      laporansparepartJSON?[i]["arus"],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 13.0,
-                        // fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           }
@@ -472,33 +449,10 @@ class _HalPimpinanLaporanSparepartState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        // margin: const EdgeInsets.only(right: 15.0),
-                        width: mediaQueryData.size.height * 0.15,
-                        height: mediaQueryData.size.height * 0.15,
-                        child: laporansparepartJSON?[i]["foto"] != null
-                            ? CachedNetworkImage(
-                                imageUrl: laporansparepartJSON?[i]["foto"],
-                                placeholder: (context, url) => Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/logo/22.png",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                fit: BoxFit.cover,
-                                height: 150.0,
-                                width: 110.0,
-                              )
-                            : Image.asset(
-                                'assets/logo/22.png',
-                                // width: mediaQueryData.size.height * 0.7,
-                                // height: mediaQueryData.size.width * 0.7,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+                          // margin: const EdgeInsets.only(right: 15.0),
+                          width: mediaQueryData.size.height * 0.12,
+                          height: mediaQueryData.size.height * 0.15,
+                          child: status),
                       SizedBox(
                         width: mediaQueryData.size.width * 0.02,
                       ),
@@ -529,7 +483,7 @@ class _HalPimpinanLaporanSparepartState
                                     width: mediaQueryData.size.height * 0.01,
                                   ),
                                   Text(
-                                    laporansparepartJSON?[i]["kode"],
+                                    laporanrequestJSON?[i]["kodereq"],
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14.0,
@@ -543,9 +497,9 @@ class _HalPimpinanLaporanSparepartState
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                laporansparepartJSON?[i]["sperpart"],
+                                laporanrequestJSON?[i]["sperpart"],
                                 style: const TextStyle(
-                                  fontSize: 15.0,
+                                  fontSize: 13.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   //fontWeight: FontWeight.normal,
@@ -554,10 +508,10 @@ class _HalPimpinanLaporanSparepartState
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporansparepartJSON?[i]["mesin"] != null
+                              child: laporanrequestJSON?[i]["mesin"] != null
                                   ? Text(
                                       'Mesin : ' +
-                                          laporansparepartJSON?[i]["mesin"],
+                                          laporanrequestJSON?[i]["mesin"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.green,
@@ -577,12 +531,12 @@ class _HalPimpinanLaporanSparepartState
                             ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporansparepartJSON?[i]["tanggal"] != null
+                              child: laporanrequestJSON?[i]["tanggal"] != null
                                   ? Text(
                                       "Tanggal : " +
-                                          laporansparepartJSON?[i]["tanggal"] +
+                                          laporanrequestJSON?[i]["tanggal"] +
                                           " " +
-                                          laporansparepartJSON?[i]["jam"],
+                                          laporanrequestJSON?[i]["jam"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -605,30 +559,55 @@ class _HalPimpinanLaporanSparepartState
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(bottom: 5.0),
-                                  child:
-                                      laporansparepartJSON?[i]["jumlah"] != null
-                                          ? Text(
-                                              'Jumlah : ' +
-                                                  laporansparepartJSON?[i]
-                                                      ["jumlah"],
-                                              style: const TextStyle(
-                                                fontSize: 13.0,
-                                                color: Colors.orange,
-                                                fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
-                                              ),
-                                            )
-                                          : const Text(
-                                              '-',
-                                              style: TextStyle(
-                                                fontSize: 13.0,
-                                                color: Colors.black,
-                                                // fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
+                                  child: laporanrequestJSON?[i]["jumlah"] !=
+                                          null
+                                      ? Text(
+                                          'Jumlah : ' +
+                                              laporanrequestJSON?[i]["jumlah"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
                                 ),
-                                status
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      right: 5.0, bottom: 5.0),
+                                  child: laporanrequestJSON?[i]
+                                              ["kodesperpart"] !=
+                                          null
+                                      ? Text(
+                                          'Kode : ' +
+                                              laporanrequestJSON?[i]
+                                                  ["kodesperpart"],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                            // fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                ),
                               ],
                             ),
                           ],
@@ -825,7 +804,7 @@ class _HalPimpinanLaporanSparepartState
                   children: [
                     Column(
                       children: <Widget>[
-                        barangmasuk == null
+                        reqproses == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -835,7 +814,7 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               )
                             : Text(
-                                "$barangmasuk",
+                                "$reqproses",
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontWeight: FontWeight.bold,
@@ -843,16 +822,16 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        barangmasuk == null
+                        reqproses == null
                             ? const Text(
-                                'Masuk',
+                                'Proses',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Masuk',
+                                'Proses',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -862,7 +841,7 @@ class _HalPimpinanLaporanSparepartState
                     ),
                     Column(
                       children: <Widget>[
-                        barangkeluar == null
+                        reqselesai == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -872,7 +851,7 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               )
                             : Text(
-                                "$barangkeluar",
+                                "$reqselesai",
                                 style: const TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.bold,
@@ -880,16 +859,16 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        barangkeluar == null
+                        reqselesai == null
                             ? const Text(
-                                'Keluar',
+                                'Selesai',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Keluar',
+                                'Selesai',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -899,7 +878,7 @@ class _HalPimpinanLaporanSparepartState
                     ),
                     Column(
                       children: <Widget>[
-                        barangreturn == null
+                        reqtotal == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -909,7 +888,7 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               )
                             : Text(
-                                "$barangreturn",
+                                "$reqtotal",
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -917,16 +896,16 @@ class _HalPimpinanLaporanSparepartState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        barangreturn == null
+                        reqtotal == null
                             ? const Text(
-                                'Return',
+                                'Total',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Return',
+                                'Total',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,

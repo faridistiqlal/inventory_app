@@ -172,7 +172,7 @@ class _FilterPimpinanLaporanSparepartState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Laporan Sparepart' + widget.dTglAwal,
+          'Laporan Sparepart',
           style: GoogleFonts.lato(
             textStyle: const TextStyle(),
           ),
@@ -355,6 +355,116 @@ class _FilterPimpinanLaporanSparepartState
             ),
           );
         } else {
+          var status;
+          if (laporansparepartJSON?[i]["arus"] == "Masuk") {
+            status = Container(
+              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: mediaQueryData.size.height * 0.005,
+                  left: mediaQueryData.size.height * 0.005,
+                  right: mediaQueryData.size.height * 0.005,
+                  bottom: mediaQueryData.size.height * 0.005,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.green[600],
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.inbox,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                    SizedBox(
+                      width: mediaQueryData.size.height * 0.01,
+                    ),
+                    Text(
+                      laporansparepartJSON?[i]["arus"],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.0,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (laporansparepartJSON?[i]["arus"] == "Keluar") {
+            status = Container(
+              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: mediaQueryData.size.height * 0.005,
+                  left: mediaQueryData.size.height * 0.005,
+                  right: mediaQueryData.size.height * 0.005,
+                  bottom: mediaQueryData.size.height * 0.005,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.outbox,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                    SizedBox(
+                      width: mediaQueryData.size.height * 0.01,
+                    ),
+                    Text(
+                      laporansparepartJSON?[i]["arus"],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.0,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (laporansparepartJSON?[i]["arus"] == "Return") {
+            status = Container(
+              margin: const EdgeInsets.only(right: 5.0, bottom: 5.0),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: mediaQueryData.size.height * 0.005,
+                  left: mediaQueryData.size.height * 0.005,
+                  right: mediaQueryData.size.height * 0.005,
+                  bottom: mediaQueryData.size.height * 0.005,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.undo,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                    SizedBox(
+                      width: mediaQueryData.size.height * 0.01,
+                    ),
+                    Text(
+                      laporansparepartJSON?[i]["arus"],
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.0,
+                        // fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
           return Container(
             padding: EdgeInsets.only(
               top: mediaQueryData.size.height * 0.01,
@@ -384,7 +494,7 @@ class _FilterPimpinanLaporanSparepartState
                       SizedBox(
                         // margin: const EdgeInsets.only(right: 15.0),
                         width: mediaQueryData.size.height * 0.15,
-                        height: mediaQueryData.size.height * 0.12,
+                        height: mediaQueryData.size.height * 0.15,
                         child: laporansparepartJSON?[i]["foto"] != null
                             ? CachedNetworkImage(
                                 imageUrl: laporansparepartJSON?[i]["foto"],
@@ -416,6 +526,39 @@ class _FilterPimpinanLaporanSparepartState
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(
+                                top: mediaQueryData.size.height * 0.005,
+                                left: mediaQueryData.size.height * 0.005,
+                                right: mediaQueryData.size.height * 0.005,
+                                bottom: mediaQueryData.size.height * 0.005,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.green[600],
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.numbers,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
+                                  SizedBox(
+                                    width: mediaQueryData.size.height * 0.01,
+                                  ),
+                                  Text(
+                                    laporansparepartJSON?[i]["kode"],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                             Container(
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
@@ -457,7 +600,9 @@ class _FilterPimpinanLaporanSparepartState
                               child: laporansparepartJSON?[i]["tanggal"] != null
                                   ? Text(
                                       "Tanggal : " +
-                                          laporansparepartJSON?[i]["tanggal"],
+                                          laporansparepartJSON?[i]["tanggal"] +
+                                          " " +
+                                          laporansparepartJSON?[i]["jam"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -503,30 +648,7 @@ class _FilterPimpinanLaporanSparepartState
                                               ),
                                             ),
                                 ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 5.0, bottom: 5.0),
-                                  child: laporansparepartJSON?[i]["jam"] != null
-                                      ? Text(
-                                          'Jam : ' +
-                                              laporansparepartJSON?[i]["jam"],
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
-                                          ),
-                                        )
-                                      : const Text(
-                                          '-',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.black,
-                                            // fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                ),
+                                status
                               ],
                             ),
                           ],
@@ -723,62 +845,113 @@ class _FilterPimpinanLaporanSparepartState
                   children: [
                     Column(
                       children: <Widget>[
-                        Text(
-                          "$barangmasuk",
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25.0,
-                          ),
-                        ),
+                        barangmasuk == null
+                            ? const Text(
+                                "0",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              )
+                            : Text(
+                                "$barangmasuk",
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              ),
                         const SizedBox(width: 8.0),
-                        const Text(
-                          'Proses',
-                          style: TextStyle(
-                            color: Color(0xFF2e2e2e),
-                            fontSize: 13.0,
-                          ),
-                        )
+                        barangmasuk == null
+                            ? const Text(
+                                'Masuk',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                            : const Text(
+                                'Masuk',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
                       ],
                     ),
                     Column(
                       children: <Widget>[
-                        Text(
-                          "$barangkeluar",
-                          style: const TextStyle(
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25.0,
-                          ),
-                        ),
+                        barangkeluar == null
+                            ? const Text(
+                                "0",
+                                style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              )
+                            : Text(
+                                "$barangkeluar",
+                                style: const TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              ),
                         const SizedBox(width: 8.0),
-                        const Text(
-                          'Selesai',
-                          style: TextStyle(
-                            color: Color(0xFF2e2e2e),
-                            fontSize: 13.0,
-                          ),
-                        )
+                        barangkeluar == null
+                            ? const Text(
+                                'Keluar',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                            : const Text(
+                                'Keluar',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
                       ],
                     ),
                     Column(
                       children: <Widget>[
-                        Text(
-                          "$barangreturn",
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25.0,
-                          ),
-                        ),
+                        barangreturn == null
+                            ? const Text(
+                                "0",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              )
+                            : Text(
+                                "$barangreturn",
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              ),
                         const SizedBox(width: 8.0),
-                        const Text(
-                          'Total',
-                          style: TextStyle(
-                            color: Color(0xFF2e2e2e),
-                            fontSize: 13.0,
-                          ),
-                        )
+                        barangreturn == null
+                            ? const Text(
+                                'Return',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                            : const Text(
+                                'Return',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
                       ],
                     ),
                   ],
