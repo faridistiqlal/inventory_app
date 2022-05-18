@@ -10,8 +10,10 @@ import 'package:inventory_app/view/cek.dart';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:inventory_app/view/mekanik/hal_mekanik.dart';
 import 'package:inventory_app/view/mekanik/input/post_request_sparepart.dart';
+import 'package:inventory_app/view/pimpinan/detail/detail_filter_assembly.dart';
 import 'package:inventory_app/view/pimpinan/detail/detail_filter_request.dart';
 import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart';
+import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_assembly.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_request.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_laporan_sparepart.dart';
 import 'package:inventory_app/view/pimpinan/hal_pimpinan_request.dart';
@@ -49,6 +51,12 @@ void main() {
             dTglAkhir: '',
             dStatus: '',
           ),
+      '/FilterPimpinanLaporanAssembly': (BuildContext context) =>
+          const FilterPimpinanLaporanAssembly(
+            dTglAwal: '',
+            dTglAkhir: '',
+            dMesin: '',
+          ),
       '/HalAdmin': (BuildContext context) => const HalAdmin(),
       '/MyHomePage': (BuildContext context) => MyHomePage(),
       '/LoginPage': (BuildContext context) => const LoginPage(),
@@ -65,6 +73,8 @@ void main() {
           const HalPimpinanLaporanSparepart(),
       '/HalPimpinanLaporanRequest': (BuildContext context) =>
           const HalPimpinanLaporanRequest(),
+      '/HalPimpinanLaporanAssembly': (BuildContext context) =>
+          const HalPimpinanLaporanAssembly(),
       '/HalRequestMekanikList': (BuildContext context) =>
           const HalRequestMekanikList(),
       '/HalMesinMekanik': (BuildContext context) => const HalMesinMekanik(),

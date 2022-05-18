@@ -30,8 +30,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   List? topmasukdateJSON;
   var isloading = false;
 
-  String? barangmasuk;
-  String? barangkeluar;
+  int? barangmasuk;
+  int? barangkeluar;
   int? barangreturn;
   int? reqproses;
   int? reqselesai;
@@ -51,7 +51,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     }, body: {
       // "tanggal": formatedTanggal.toString(),
       "tanggalawal": 'all',
-      "tanggakhir": 'all',
+      "tanggalakhir": 'all',
     });
     var laporanbydateJSON = json.decode(res.body);
     if (res.statusCode == 200) {
@@ -480,7 +480,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         const FaIcon(
-                                          FontAwesomeIcons.fileLines,
+                                          FontAwesomeIcons.gears,
                                           color: Colors.white,
                                           size: 35,
                                         ),
@@ -627,7 +627,185 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: mediaQueryData.size.width * 0.475,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              child: Material(
+                                color: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, '/HalPimpinanLaporanAssembly');
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const FaIcon(
+                                          FontAwesomeIcons.puzzlePiece,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          // crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Text(
+                                              'Laporan Assembly', //IBADAH
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: mediaQueryData.size.height *
+                                                0.02,
+                                          ),
+                                        ),
+                                        // const Text(
+                                        //   "Request",
+                                        //   style: TextStyle(
+                                        //     fontSize: 15,
+                                        //     color: Colors.white,
+                                        //   ),
+                                        // ),
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //     top:
+                                        //         mediaQueryData.size.height * 0.02,
+                                        //   ),
+                                        // ),
+                                        Text(
+                                          "Tap to view",
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   width: mediaQueryData.size.width * 0.475,
+                          //   child: Card(
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(15.0),
+                          //     ),
+                          //     child: Material(
+                          //       color: Colors.blue,
+                          //       shape: RoundedRectangleBorder(
+                          //         borderRadius: BorderRadius.circular(15.0),
+                          //       ),
+                          //       child: InkWell(
+                          //         onTap: () {
+                          //           Navigator.pushNamed(
+                          //               context, '/HalPimpinanLaporanRequest');
+                          //         },
+                          //         child: Container(
+                          //           decoration: BoxDecoration(
+                          //             borderRadius: BorderRadius.circular(15),
+                          //           ),
+                          //           padding: const EdgeInsets.all(10.0),
+                          //           child: Column(
+                          //             mainAxisAlignment:
+                          //                 MainAxisAlignment.start,
+                          //             crossAxisAlignment:
+                          //                 CrossAxisAlignment.start,
+                          //             children: <Widget>[
+                          //               const FaIcon(
+                          //                 FontAwesomeIcons.fileImport,
+                          //                 color: Colors.white,
+                          //                 size: 35,
+                          //               ),
+                          //               Padding(
+                          //                 padding: EdgeInsets.only(
+                          //                   top: mediaQueryData.size.height *
+                          //                       0.02,
+                          //                 ),
+                          //               ),
+                          //               Row(
+                          //                 mainAxisAlignment:
+                          //                     MainAxisAlignment.spaceBetween,
+                          //                 // crossAxisAlignment: CrossAxisAlignment.start,
+                          //                 children: const <Widget>[
+                          //                   Text(
+                          //                     'Laporan Request', //IBADAH
+                          //                     style: TextStyle(
+                          //                       fontSize: 17,
+                          //                       fontWeight: FontWeight.bold,
+                          //                       color: Colors.white,
+                          //                     ),
+                          //                   ),
+                          //                 ],
+                          //               ),
+                          //               // Padding(
+                          //               //   padding: EdgeInsets.only(
+                          //               //     top:
+                          //               //         mediaQueryData.size.height * 0.01,
+                          //               //   ),
+                          //               // ),
+                          //               // const Text(
+                          //               //   "Mesin",
+                          //               //   style: TextStyle(
+                          //               //     fontSize: 15,
+                          //               //     color: Colors.white,
+                          //               //   ),
+                          //               // ),
+                          //               Padding(
+                          //                 padding: EdgeInsets.only(
+                          //                   top: mediaQueryData.size.height *
+                          //                       0.02,
+                          //                 ),
+                          //               ),
+                          //               Text(
+                          //                 "Tap to view",
+                          //                 style: TextStyle(
+                          //                   fontSize: 11,
+                          //                   color:
+                          //                       Colors.white.withOpacity(0.5),
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     ],
                   ),
 
