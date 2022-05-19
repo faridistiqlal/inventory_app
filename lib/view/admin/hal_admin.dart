@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory_app/style/style.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -13,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
 import '../../class/header.dart';
 import 'dart:convert';
-
 import 'detail/detail_sparepart.dart';
 
 class HalAdmin extends StatefulWidget {

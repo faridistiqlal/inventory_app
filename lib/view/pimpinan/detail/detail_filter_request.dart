@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FilterPimpinanLaporanRequest extends StatefulWidget {
-  // const FilterPimpinanLaporanRequest({Key? key}) : super(key: key);
   final String dTglAwal, dTglAkhir, dStatus;
   const FilterPimpinanLaporanRequest({
     Key? key,
@@ -85,7 +83,6 @@ class _FilterPimpinanLaporanRequestState
   }
 
   void laporanbyDate() async {
-    // SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       isloading = true;
     });
@@ -228,7 +225,7 @@ class _FilterPimpinanLaporanRequestState
         style: ElevatedButton.styleFrom(
           primary: Colors.amber,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10), // <-- Radius
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(
@@ -293,22 +290,6 @@ class _FilterPimpinanLaporanRequestState
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
-                // LineSeries<SalesData, String>(
-                //   name: "Keluar",
-                //   dataSource: chartData,
-                //   xValueMapper: (SalesData sales, _) => sales.tanggal,
-                //   yValueMapper: (SalesData sales, _) => sales.keluar,
-                //   // Enable data label
-                //   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                // ),
-                // LineSeries<SalesData, String>(
-                //   name: "Retur",
-                //   dataSource: chartData,
-                //   xValueMapper: (SalesData sales, _) => sales.tanggal,
-                //   yValueMapper: (SalesData sales, _) => sales.retur,
-                //   // Enable data label
-                //   dataLabelSettings: const DataLabelSettings(isVisible: true),
-                // ),
               ],
             );
           } else {
@@ -354,6 +335,7 @@ class _FilterPimpinanLaporanRequestState
             ),
           );
         } else {
+          // ignore: prefer_typing_uninitialized_variables
           var status;
           if (laporanrequestJSON?[i]["status"] == "Selesai") {
             status = Material(
@@ -381,8 +363,6 @@ class _FilterPimpinanLaporanRequestState
                     style: const TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
-                      // fontWeight: FontWeight.bold,
-                      //fontWeight: FontWeight.normal,
                     ),
                   ),
                 ],
@@ -405,17 +385,13 @@ class _FilterPimpinanLaporanRequestState
                     icon: const Icon(Icons.watch_later_outlined),
                     color: Colors.white,
                     iconSize: 50.0,
-                    onPressed: () {
-                      // Navigator.pushNamed(context, '/DetailSurat');
-                    },
+                    onPressed: () {},
                   ),
                   Text(
                     laporanrequestJSON?[i]["status"],
                     style: const TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
-                      // fontWeight: FontWeight.bold,
-                      //fontWeight: FontWeight.normal,
                     ),
                   ),
                 ],
@@ -449,7 +425,6 @@ class _FilterPimpinanLaporanRequestState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                          // margin: const EdgeInsets.only(right: 15.0),
                           width: mediaQueryData.size.height * 0.12,
                           height: mediaQueryData.size.height * 0.15,
                           child: status),
@@ -502,7 +477,6 @@ class _FilterPimpinanLaporanRequestState
                                   fontSize: 13.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  //fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ),
@@ -516,7 +490,6 @@ class _FilterPimpinanLaporanRequestState
                                         fontSize: 13.0,
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     )
                                   : const Text(
@@ -524,8 +497,6 @@ class _FilterPimpinanLaporanRequestState
                                       style: TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     ),
                             ),
@@ -540,8 +511,6 @@ class _FilterPimpinanLaporanRequestState
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     )
                                   : const Text(
@@ -549,8 +518,6 @@ class _FilterPimpinanLaporanRequestState
                                       style: TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     ),
                             ),
@@ -568,7 +535,6 @@ class _FilterPimpinanLaporanRequestState
                                             fontSize: 13.0,
                                             color: Colors.orange,
                                             fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
                                           ),
                                         )
                                       : const Text(
@@ -576,8 +542,6 @@ class _FilterPimpinanLaporanRequestState
                                           style: TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.black,
-                                            // fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
                                           ),
                                         ),
                                 ),
@@ -595,7 +559,6 @@ class _FilterPimpinanLaporanRequestState
                                             fontSize: 13.0,
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
                                           ),
                                         )
                                       : const Text(
@@ -603,8 +566,6 @@ class _FilterPimpinanLaporanRequestState
                                           style: TextStyle(
                                             fontSize: 13.0,
                                             color: Colors.black,
-                                            // fontWeight: FontWeight.bold,
-                                            //fontWeight: FontWeight.normal,
                                           ),
                                         ),
                                 ),
@@ -709,7 +670,6 @@ class _FilterPimpinanLaporanRequestState
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
-                //contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.date_range,
                   color: Colors.grey[600],
@@ -744,7 +704,6 @@ class _FilterPimpinanLaporanRequestState
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
-                //contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.date_range,
                   color: Colors.grey[600],

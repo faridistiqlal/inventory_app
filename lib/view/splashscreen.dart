@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:inventory_app/view/login_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import '../class/splashscreen_class.dart';
 import '../style/style.dart';
 

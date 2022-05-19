@@ -2,12 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory_app/style/style.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http; //* package untuk akses http
-import 'dart:convert'; //* package untuk convert API
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:inventory_app/service/service.dart';
 import '../class/header.dart';
 
@@ -19,17 +18,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //NOTE Globalkey
+//NOTE Globalkey
   late GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 //NOTE Boolean
-
   // ignore: unused_field
   late bool _sudahlogin = false;
   // ignore: unused_field
   late bool _loading = false;
   bool _obscureText = true;
 
+//NOTE Toogle password
   void _toggle() {
     setState(
       () {
@@ -38,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-//REVIEW Cek Login
+//NOTE Cek Login User
   Future _cekLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("_sudahlogin") == true) {
@@ -50,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
       );
       if (pref.getString('Level') == '1') {
         Navigator.pushReplacementNamed(context, '/HalAdmin');
-        //  Navigator.pushReplacementNamed(context, '/HalTabAdmin');
       } else if (pref.getString('Level') == '2') {
         Navigator.pushReplacementNamed(context, '/HalMekanik');
       } else if (pref.getString('Level') == '3') {
@@ -65,10 +63,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-//NOTE Controller
+//NOTE Controller user dan password
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
+//NOTE Fungsi Login
   void _login() async {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     setState(
@@ -89,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
         var loginuser = json.decode(res.body);
-        // print(loginuser);
         if (kDebugMode) {
           print(loginuser);
         }
@@ -271,25 +269,6 @@ class _LoginPageState extends State<LoginPage> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       key: scaffoldKey,
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Selamat datang',
-      //     style: GoogleFonts.lato(
-      //       textStyle: const TextStyle(),
-      //     ),
-      //   ),
-      //   elevation: 0,
-      //   actions: <Widget>[
-      //     Consumer<ThemeNotifier>(
-      //       builder: (context, notifier, child) => IconButton(
-      //         icon: Icon(notifier.darkTheme ? Icons.sunny : Icons.dark_mode),
-      //         onPressed: () {
-      //           notifier.toggleTheme();
-      //         },
-      //       ),
-      //     )
-      //   ],
-      // ),
       resizeToAvoidBottomInset: false,
       body: ModalProgressHUD(
         inAsyncCall: _loading,
@@ -323,82 +302,38 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginForm(MediaQueryData mediaQueryData) {
     return SizedBox(
-        child:
-            // Consumer<ThemeNotifier>(
-            //   builder: (context, notifier, child) => notifier.darkTheme
-            //       ?
-            Container(
-                padding: const EdgeInsets.only(top: defaultPadding * 2),
-                width: MediaQuery.of(context).size.width,
-                // height: MediaQuery.of(context).size.width * 0.5,
-                margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.25),
-                decoration: BoxDecoration(
-                  color: bgCOlor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Container(
-                    padding: EdgeInsets.only(
-                      left: mediaQueryData.size.height * 0.02,
-                      right: mediaQueryData.size.height * 0.02,
-                      // bottom: mediaQueryData.size.height * 0.03,
-                      // top: mediaQueryData.size.height * 0.01,
-                    ),
-                    child: ListView(children: <Widget>[
-                      // _title(),
-                      // const Padding(
-                      //   padding: EdgeInsets.only(top: defaultPadding * 2),
-                      // ),
-                      _inputNIK(),
-                      const Padding(
-                        padding: EdgeInsets.only(top: defaultPadding * 2),
-                      ),
-                      _inputPassword(),
-                      const Padding(
-                        padding: EdgeInsets.only(top: defaultPadding * 3),
-                      ),
-                      _loginButton(),
-                    ])))
-        // : Container(
-        //     padding: const EdgeInsets.only(top: defaultPadding * 2),
-        //     width: MediaQuery.of(context).size.width,
-        //     margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.2),
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(15),
-        //       color: Colors.white,
-        //     ),
-        //     child: Container(
-        //         padding: EdgeInsets.only(
-        //           left: mediaQueryData.size.height * 0.02,
-        //           right: mediaQueryData.size.height * 0.02,
-        //           // bottom: mediaQueryData.size.height * 0.03,
-        //           // top: mediaQueryData.size.height * 0.01,
-        //         ),
-        //         child: ListView(children: <Widget>[
-        //           _title(),
-        //           const Padding(
-        //             padding: EdgeInsets.only(top: defaultPadding * 2),
-        //           ),
-        //           _inputNIK(),
-        //           const Padding(
-        //             padding: EdgeInsets.only(top: defaultPadding * 2),
-        //           ),
-        //           _inputPassword(),
-        //           const Padding(
-        //             padding: EdgeInsets.only(top: defaultPadding * 2),
-        //           ),
-        //           _loginButton(),
-        //         ]))),
-        // ),
-        );
+        child: Container(
+      padding: const EdgeInsets.only(top: defaultPadding * 2),
+      width: MediaQuery.of(context).size.width,
+      // height: MediaQuery.of(context).size.width * 0.5,
+      margin: EdgeInsets.only(top: mediaQueryData.size.height * 0.25),
+      decoration: BoxDecoration(
+        color: bgCOlor,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        padding: EdgeInsets.only(
+          left: mediaQueryData.size.height * 0.02,
+          right: mediaQueryData.size.height * 0.02,
+          // bottom: mediaQueryData.size.height * 0.03,
+          // top: mediaQueryData.size.height * 0.01,
+        ),
+        child: ListView(
+          children: <Widget>[
+            _inputNIK(),
+            const Padding(
+              padding: EdgeInsets.only(top: defaultPadding * 2),
+            ),
+            _inputPassword(),
+            const Padding(
+              padding: EdgeInsets.only(top: defaultPadding * 3),
+            ),
+            _loginButton(),
+          ],
+        ),
+      ),
+    ));
   }
-
-  // Widget _title() {
-  //   return Text(
-  //     "Login",
-  //     style: Theme.of(context).textTheme.headline5?.copyWith(
-  //         color: titleText, fontWeight: FontWeight.w700, fontSize: 30),
-  //   );
-  // }
 
   Widget _inputNIK() {
     return Container(

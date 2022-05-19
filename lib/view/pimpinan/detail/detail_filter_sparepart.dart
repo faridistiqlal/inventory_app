@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class FilterPimpinanLaporanSparepart extends StatefulWidget {
-  // const FilterPimpinanLaporanSparepart({Key? key}) : super(key: key);
   final String dTglAwal, dTglAkhir, dStatus;
   const FilterPimpinanLaporanSparepart({
     Key? key,
@@ -85,7 +84,6 @@ class _FilterPimpinanLaporanSparepartState
   }
 
   void laporanbyDate() async {
-    // SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       isloading = true;
     });
@@ -355,6 +353,7 @@ class _FilterPimpinanLaporanSparepartState
             ),
           );
         } else {
+          // ignore: prefer_typing_uninitialized_variables
           var status;
           if (laporansparepartJSON?[i]["arus"] == "Masuk") {
             status = Container(
@@ -457,7 +456,6 @@ class _FilterPimpinanLaporanSparepartState
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 13.0,
-                        // fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
@@ -492,7 +490,6 @@ class _FilterPimpinanLaporanSparepartState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                        // margin: const EdgeInsets.only(right: 15.0),
                         width: mediaQueryData.size.height * 0.15,
                         height: mediaQueryData.size.height * 0.15,
                         child: laporansparepartJSON?[i]["foto"] != null
@@ -514,8 +511,6 @@ class _FilterPimpinanLaporanSparepartState
                               )
                             : Image.asset(
                                 'assets/logo/22.png',
-                                // width: mediaQueryData.size.height * 0.7,
-                                // height: mediaQueryData.size.width * 0.7,
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -568,7 +563,6 @@ class _FilterPimpinanLaporanSparepartState
                                   fontSize: 15.0,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
-                                  //fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ),
@@ -582,7 +576,6 @@ class _FilterPimpinanLaporanSparepartState
                                         fontSize: 13.0,
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     )
                                   : const Text(
@@ -590,8 +583,6 @@ class _FilterPimpinanLaporanSparepartState
                                       style: TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     ),
                             ),
@@ -606,8 +597,6 @@ class _FilterPimpinanLaporanSparepartState
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     )
                                   : const Text(
@@ -615,8 +604,6 @@ class _FilterPimpinanLaporanSparepartState
                                       style: TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
-                                        // fontWeight: FontWeight.bold,
-                                        //fontWeight: FontWeight.normal,
                                       ),
                                     ),
                             ),
@@ -635,7 +622,6 @@ class _FilterPimpinanLaporanSparepartState
                                                 fontSize: 13.0,
                                                 color: Colors.orange,
                                                 fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
                                               ),
                                             )
                                           : const Text(
@@ -643,8 +629,6 @@ class _FilterPimpinanLaporanSparepartState
                                               style: TextStyle(
                                                 fontSize: 13.0,
                                                 color: Colors.black,
-                                                // fontWeight: FontWeight.bold,
-                                                //fontWeight: FontWeight.normal,
                                               ),
                                             ),
                                 ),
@@ -750,7 +734,6 @@ class _FilterPimpinanLaporanSparepartState
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
-                //contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.date_range,
                   color: Colors.grey[600],
@@ -785,7 +768,6 @@ class _FilterPimpinanLaporanSparepartState
               },
               decoration: InputDecoration(
                 border: InputBorder.none,
-                //contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.date_range,
                   color: Colors.grey[600],

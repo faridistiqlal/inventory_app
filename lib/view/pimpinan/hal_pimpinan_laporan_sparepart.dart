@@ -19,7 +19,6 @@ class HalPimpinanLaporanSparepart extends StatefulWidget {
       _HalPimpinanLaporanSparepartState();
 }
 
-//CEK
 class _HalPimpinanLaporanSparepartState
     extends State<HalPimpinanLaporanSparepart> {
   int? barangmasuk;
@@ -85,7 +84,6 @@ class _HalPimpinanLaporanSparepartState
   }
 
   void laporanbyDate() async {
-    // SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       isloading = true;
     });
@@ -335,6 +333,7 @@ class _HalPimpinanLaporanSparepartState
             ),
           );
         } else {
+          // ignore: prefer_typing_uninitialized_variables
           var status;
           if (laporansparepartJSON?[i]["arus"] == "Masuk") {
             status = Container(
