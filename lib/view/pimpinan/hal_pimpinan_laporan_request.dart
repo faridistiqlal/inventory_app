@@ -272,24 +272,11 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
               title: ChartTitle(text: 'Laporan Sparepart'),
               series: <ChartSeries<SalesData, String>>[
                 LineSeries<SalesData, String>(
-                  name: "Masuk",
+                  name: "Jumlah",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.masuk,
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                ),
-                LineSeries<SalesData, String>(
-                  name: "Keluar",
-                  dataSource: chartData,
-                  xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.keluar,
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
-                ),
-                LineSeries<SalesData, String>(
-                  name: "Retur",
-                  dataSource: chartData,
-                  xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.retur,
+                  yValueMapper: (SalesData sales, _) => sales.jumlah,
+                  // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
               ],
@@ -886,22 +873,16 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
 class SalesData {
   SalesData(
     this.tanggal,
-    this.masuk,
-    this.keluar,
-    this.retur,
+    this.jumlah,
   );
 
   final String tanggal;
-  final int masuk;
-  final int keluar;
-  final int retur;
+  final int jumlah;
 
   factory SalesData.fromJson(Map<String, dynamic> parsedJson) {
     return SalesData(
       parsedJson['tanggal'].toString(),
-      int.parse(parsedJson['masuk']),
-      int.parse(parsedJson['keluar']),
-      int.parse(parsedJson['retur']),
+      int.parse(parsedJson['jumlah']),
     );
   }
 }

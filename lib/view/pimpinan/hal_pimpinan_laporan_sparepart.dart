@@ -283,7 +283,23 @@ class _HalPimpinanLaporanSparepartState
                   name: "Masuk",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
-                  yValueMapper: (SalesData sales, _) => sales.jumlah,
+                  yValueMapper: (SalesData sales, _) => sales.masuk,
+                  // Enable data label
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                ),
+                LineSeries<SalesData, String>(
+                  name: "Keluar",
+                  dataSource: chartData,
+                  xValueMapper: (SalesData sales, _) => sales.tanggal,
+                  yValueMapper: (SalesData sales, _) => sales.keluar,
+                  // Enable data label
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                ),
+                LineSeries<SalesData, String>(
+                  name: "Retur",
+                  dataSource: chartData,
+                  xValueMapper: (SalesData sales, _) => sales.tanggal,
+                  yValueMapper: (SalesData sales, _) => sales.retur,
                   // Enable data label
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
@@ -947,16 +963,22 @@ class _HalPimpinanLaporanSparepartState
 class SalesData {
   SalesData(
     this.tanggal,
-    this.jumlah,
+    this.masuk,
+    this.keluar,
+    this.retur,
   );
 
   final String tanggal;
-  final int jumlah;
+  final int masuk;
+  final int keluar;
+  final int retur;
 
   factory SalesData.fromJson(Map<String, dynamic> parsedJson) {
     return SalesData(
       parsedJson['tanggal'].toString(),
-      int.parse(parsedJson['jumlah']),
+      int.parse(parsedJson['masuk']),
+      int.parse(parsedJson['keluar']),
+      int.parse(parsedJson['retur']),
     );
   }
 }
