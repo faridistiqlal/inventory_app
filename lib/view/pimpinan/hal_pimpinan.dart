@@ -693,8 +693,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Top Sparepart Masuk",
                           style: TextStyle(
                             fontSize: 15.0,
@@ -702,14 +702,14 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.open_in_new),
-                          color: Colors.white,
-                          iconSize: 25.0,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/MyHomePage');
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.open_in_new),
+                        //   color: Colors.white,
+                        //   iconSize: 25.0,
+                        //   onPressed: () {
+                        //     Navigator.pushNamed(context, '/MyHomePage');
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
@@ -795,8 +795,8 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Top Sparepart Keluar",
                           style: TextStyle(
                             fontSize: 15.0,
@@ -804,14 +804,14 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.open_in_new),
-                          color: Colors.white,
-                          iconSize: 25.0,
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/DetailKesehatan');
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.open_in_new),
+                        //   color: Colors.white,
+                        //   iconSize: 25.0,
+                        //   onPressed: () {
+                        //     Navigator.pushNamed(context, '/DetailKesehatan');
+                        //   },
+                        // ),
                       ],
                     ),
                   ),
