@@ -244,7 +244,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   Widget laporanassembly() {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return SizedBox(
-      width: mediaQueryData.size.width * 0.475,
+      width: mediaQueryData.size.width * 0.47,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -274,7 +274,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: mediaQueryData.size.height * 0.02,
+                      top: mediaQueryData.size.height * 0.01,
                     ),
                   ),
                   Row(
@@ -282,7 +282,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[
                       Text(
-                        'Laporan Assembly', //IBADAH
+                        'Laporan\nAssembly', //IBADAH
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -315,7 +315,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   Widget laporanrequest() {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return SizedBox(
-      width: mediaQueryData.size.width * 0.475,
+      width: mediaQueryData.size.width * 0.47,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -345,7 +345,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: mediaQueryData.size.height * 0.02,
+                      top: mediaQueryData.size.height * 0.01,
                     ),
                   ),
                   Row(
@@ -353,7 +353,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[
                       Text(
-                        'Laporan Request', //IBADAH
+                        'Laporan\nRequest', //IBADAH
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -386,7 +386,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   Widget laporanspareart() {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return SizedBox(
-      width: mediaQueryData.size.width * 0.475,
+      width: mediaQueryData.size.width * 0.47,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
@@ -416,7 +416,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: mediaQueryData.size.height * 0.02,
+                      top: mediaQueryData.size.height * 0.01,
                     ),
                   ),
                   Row(
@@ -424,7 +424,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[
                       Text(
-                        'Laporan Sparepart', //IBADAH
+                        'Laporan\nSparepart', //IBADAH
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
