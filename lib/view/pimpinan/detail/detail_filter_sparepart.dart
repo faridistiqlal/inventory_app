@@ -26,8 +26,8 @@ class FilterPimpinanLaporanSparepart extends StatefulWidget {
 
 class _FilterPimpinanLaporanSparepartState
     extends State<FilterPimpinanLaporanSparepart> {
-  String? barangmasuk;
-  String? barangkeluar;
+  int? barangmasuk;
+  int? barangkeluar;
   int? barangreturn;
   List<SalesData> chartData = [];
   List? laporansparepartJSON;
