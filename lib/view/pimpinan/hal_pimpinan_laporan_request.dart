@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
+import 'package:inventory_app/style/style.dart';
 import 'package:inventory_app/view/pimpinan/detail/detail_filter_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -19,9 +20,9 @@ class HalPimpinanLaporanRequest extends StatefulWidget {
 }
 
 class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
-  int? reqproses;
-  int? reqselesai;
-  int? reqtotal;
+  String? total;
+  String? proses;
+  String? selesai;
   List<SalesData> chartData = [];
   List? laporanrequestJSON;
   late TooltipBehavior _tooltipBehavior;
@@ -71,8 +72,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
       });
     }
     if (kDebugMode) {
-      print("Laporan Sparepart :");
+      print("----------------Laporan Sparepart--------------------");
       print(laporanrequestJSON);
+      print("----------------Laporan Sparepart--------------------");
     }
   }
 
@@ -80,7 +82,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporanbydate';
+    String theUrl = getMyUrl.url + 'prosses/laporantotalrequest';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
@@ -92,9 +94,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     if (res.statusCode == 200) {
       setState(
         () {
-          reqproses = laporanbydateJSON['reqproses'];
-          reqselesai = laporanbydateJSON['reqselesai'];
-          reqtotal = laporanbydateJSON['reqtotal'];
+          total = laporanbydateJSON['total'];
+          proses = laporanbydateJSON['proses'];
+          selesai = laporanbydateJSON['selesai'];
           isloading = false;
         },
       );
@@ -115,7 +117,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporanrequest";
+        "https://dwianugrahsentosa.phdcorp.id/api/prosses/grafiklaporanrequest";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -158,6 +160,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Request',
           style: GoogleFonts.lato(
@@ -212,7 +215,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -326,7 +329,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
         } else {
           // ignore: prefer_typing_uninitialized_variables
           var status;
-          if (laporanrequestJSON?[i]["status"] == "Selesai") {
+          if (laporanrequestJSON?[i]["aksi"] == "0") {
             status = Material(
               borderRadius: BorderRadius.circular(5.0),
               color: Colors.green[800],
@@ -345,9 +348,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                     iconSize: 50.0,
                     onPressed: () {},
                   ),
-                  Text(
-                    laporanrequestJSON?[i]["status"],
-                    style: const TextStyle(
+                  const Text(
+                    "Selesai",
+                    style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
                     ),
@@ -374,9 +377,9 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                     iconSize: 50.0,
                     onPressed: () {},
                   ),
-                  Text(
-                    laporanrequestJSON?[i]["status"],
-                    style: const TextStyle(
+                  const Text(
+                    "Progress",
+                    style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
                     ),
@@ -388,8 +391,8 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
           return Container(
             padding: EdgeInsets.only(
               top: mediaQueryData.size.height * 0.01,
-              left: mediaQueryData.size.height * 0.01,
-              right: mediaQueryData.size.height * 0.01,
+              // left: mediaQueryData.size.height * 0.01,
+              // right: mediaQueryData.size.height * 0.01,
             ),
             child: Container(
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -412,7 +415,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                     children: <Widget>[
                       SizedBox(
                         width: mediaQueryData.size.height * 0.12,
-                        height: mediaQueryData.size.height * 0.15,
+                        height: mediaQueryData.size.height * 0.12,
                         child: status,
                       ),
                       SizedBox(
@@ -459,7 +462,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                laporanrequestJSON?[i]["sperpart"],
+                                laporanrequestJSON?[i]["keterangan"],
                                 style: const TextStyle(
                                   fontSize: 13.0,
                                   color: Colors.black,
@@ -467,34 +470,32 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporanrequestJSON?[i]["mesin"] != null
-                                  ? Text(
-                                      'Mesin : ' +
-                                          laporanrequestJSON?[i]["mesin"],
-                                      style: const TextStyle(
-                                        fontSize: 13.0,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  : const Text(
-                                      '-',
-                                      style: TextStyle(
-                                        fontSize: 13.0,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                            ),
+                            // Container(
+                            //   margin: const EdgeInsets.only(bottom: 5.0),
+                            //   child: laporanrequestJSON?[i]["mesin"] != null
+                            //       ? Text(
+                            //           'Mesin : ' +
+                            //               laporanrequestJSON?[i]["mesin"],
+                            //           style: const TextStyle(
+                            //             fontSize: 13.0,
+                            //             color: Colors.green,
+                            //             fontWeight: FontWeight.bold,
+                            //           ),
+                            //         )
+                            //       : const Text(
+                            //           '-',
+                            //           style: TextStyle(
+                            //             fontSize: 13.0,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ),
+                            // ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
                               child: laporanrequestJSON?[i]["tanggal"] != null
                                   ? Text(
                                       "Tanggal : " +
-                                          laporanrequestJSON?[i]["tanggal"] +
-                                          " " +
-                                          laporanrequestJSON?[i]["jam"],
+                                          laporanrequestJSON?[i]["tanggal"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -508,56 +509,56 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                       ),
                                     ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 5.0),
-                                  child: laporanrequestJSON?[i]["jumlah"] !=
-                                          null
-                                      ? Text(
-                                          'Jumlah : ' +
-                                              laporanrequestJSON?[i]["jumlah"],
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.orange,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : const Text(
-                                          '-',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 5.0, bottom: 5.0),
-                                  child: laporanrequestJSON?[i]
-                                              ["kodesperpart"] !=
-                                          null
-                                      ? Text(
-                                          'Kode : ' +
-                                              laporanrequestJSON?[i]
-                                                  ["kodesperpart"],
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : const Text(
-                                          '-',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Container(
+                            //       margin: const EdgeInsets.only(bottom: 5.0),
+                            //       child: laporanrequestJSON?[i]["jumlah"] !=
+                            //               null
+                            //           ? Text(
+                            //               'Jumlah : ' +
+                            //                   laporanrequestJSON?[i]["jumlah"],
+                            //               style: const TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.orange,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             )
+                            //           : const Text(
+                            //               '-',
+                            //               style: TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //     ),
+                            //     Container(
+                            //       margin: const EdgeInsets.only(
+                            //           right: 5.0, bottom: 5.0),
+                            //       child: laporanrequestJSON?[i]
+                            //                   ["kodesperpart"] !=
+                            //               null
+                            //           ? Text(
+                            //               'Kode : ' +
+                            //                   laporanrequestJSON?[i]
+                            //                       ["kodesperpart"],
+                            //               style: const TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.blue,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             )
+                            //           : const Text(
+                            //               '-',
+                            //               style: TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       )
@@ -750,7 +751,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                   children: [
                     Column(
                       children: <Widget>[
-                        reqproses == null
+                        proses == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -760,7 +761,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                 ),
                               )
                             : Text(
-                                "$reqproses",
+                                "$proses",
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontWeight: FontWeight.bold,
@@ -768,7 +769,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        reqproses == null
+                        proses == null
                             ? const Text(
                                 'Memuat..',
                                 style: TextStyle(
@@ -787,7 +788,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                     ),
                     Column(
                       children: <Widget>[
-                        reqselesai == null
+                        total == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -797,7 +798,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                 ),
                               )
                             : Text(
-                                "$reqselesai",
+                                "$total",
                                 style: const TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.bold,
@@ -805,44 +806,7 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        reqselesai == null
-                            ? const Text(
-                                'Memuat..',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
-                            : const Text(
-                                'Selesai',
-                                style: TextStyle(
-                                  color: Color(0xFF2e2e2e),
-                                  fontSize: 13.0,
-                                ),
-                              )
-                      ],
-                    ),
-                    Column(
-                      children: <Widget>[
-                        reqtotal == null
-                            ? const Text(
-                                "0",
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              )
-                            : Text(
-                                "$reqtotal",
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0,
-                                ),
-                              ),
-                        const SizedBox(width: 8.0),
-                        reqtotal == null
+                        total == null
                             ? const Text(
                                 'Memuat..',
                                 style: TextStyle(
@@ -852,6 +816,43 @@ class _HalPimpinanLaporanRequestState extends State<HalPimpinanLaporanRequest> {
                               )
                             : const Text(
                                 'Total',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        selesai == null
+                            ? const Text(
+                                "0",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              )
+                            : Text(
+                                "$selesai",
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25.0,
+                                ),
+                              ),
+                        const SizedBox(width: 8.0),
+                        selesai == null
+                            ? const Text(
+                                'Memuat..',
+                                style: TextStyle(
+                                  color: Color(0xFF2e2e2e),
+                                  fontSize: 13.0,
+                                ),
+                              )
+                            : const Text(
+                                'Selesai',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,

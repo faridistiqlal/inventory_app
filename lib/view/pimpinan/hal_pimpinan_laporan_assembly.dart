@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
+import 'package:inventory_app/style/style.dart';
 import 'package:inventory_app/view/pimpinan/detail/detail_filter_assembly.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -122,7 +123,8 @@ class _HalPimpinanLaporanAssemblyState
   }
 
   Future<String> getJsonFromFirebase() async {
-    String url = "http://inventory.akses-yt.id/api/prosses/grafiklaporanmesin";
+    String url =
+        "https://dwianugrahsentosa.phdcorp.id/api/prosses/grafiklaporanmesin";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -167,6 +169,7 @@ class _HalPimpinanLaporanAssemblyState
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Assembly',
           style: GoogleFonts.lato(
@@ -222,7 +225,7 @@ class _HalPimpinanLaporanAssemblyState
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
           ),
@@ -328,7 +331,7 @@ class _HalPimpinanLaporanAssemblyState
                   height: mediaQueryData.size.height * 0.02,
                 ),
                 Text(
-                  "Tidak ada Sparepart",
+                  "Tidak ada Data",
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.grey[300],
@@ -620,12 +623,12 @@ class _HalPimpinanLaporanAssemblyState
                   SizedBox(
                     width: mediaQueryData.size.width * 0.01,
                   ),
-                  const Icon(
-                    Icons.info_outline,
-                    color: Colors.grey,
+                  Icon(
+                    Icons.grid_view_sharp,
+                    color: Colors.grey[600],
                   ),
                   Text(
-                    "    Pilih Status",
+                    "    Pilih Mesin",
                     style: TextStyle(
                       color: Colors.grey[400],
                     ),

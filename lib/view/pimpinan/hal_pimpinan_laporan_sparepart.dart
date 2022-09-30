@@ -11,6 +11,8 @@ import 'package:inventory_app/view/pimpinan/detail/detail_filter_sparepart.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../style/style.dart';
+
 class HalPimpinanLaporanSparepart extends StatefulWidget {
   const HalPimpinanLaporanSparepart({Key? key}) : super(key: key);
 
@@ -21,9 +23,9 @@ class HalPimpinanLaporanSparepart extends StatefulWidget {
 
 class _HalPimpinanLaporanSparepartState
     extends State<HalPimpinanLaporanSparepart> {
-  int? barangmasuk;
-  int? barangkeluar;
-  int? barangreturn;
+  String? barangmasuk;
+  String? barangkeluar;
+  String? barangreturn;
   List<SalesData> chartData = [];
   List? laporansparepartJSON;
   late TooltipBehavior _tooltipBehavior;
@@ -78,8 +80,9 @@ class _HalPimpinanLaporanSparepartState
       });
     }
     if (kDebugMode) {
-      print("Laporan Sparepart :");
+      print("------------Laporan Sparepart----------");
       print(laporansparepartJSON);
+      print("------------Laporan Sparepart----------");
     }
   }
 
@@ -87,7 +90,7 @@ class _HalPimpinanLaporanSparepartState
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporanbydate';
+    String theUrl = getMyUrl.url + 'prosses/laporantotalsparepart';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
@@ -107,8 +110,9 @@ class _HalPimpinanLaporanSparepartState
       );
     }
     if (kDebugMode) {
-      print("LaporanbyDate : ");
+      print("------------Laporan Sparepart Card----------");
       print(laporanbydateJSON);
+      print("------------Laporan Sparepart Card----------");
     }
   }
 
@@ -122,7 +126,7 @@ class _HalPimpinanLaporanSparepartState
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporansperpart";
+        "https://dwianugrahsentosa.phdcorp.id/api/prosses/grafiklaporansperpart";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -165,6 +169,7 @@ class _HalPimpinanLaporanSparepartState
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Sparepart',
           style: GoogleFonts.lato(
@@ -220,7 +225,7 @@ class _HalPimpinanLaporanSparepartState
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
           ),
@@ -285,7 +290,10 @@ class _HalPimpinanLaporanSparepartState
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.masuk,
                   // Enable data label
-                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  color: Colors.orange,
+                  dataLabelSettings: const DataLabelSettings(
+                    isVisible: true,
+                  ),
                 ),
                 LineSeries<SalesData, String>(
                   name: "Keluar",
@@ -293,14 +301,16 @@ class _HalPimpinanLaporanSparepartState
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.keluar,
                   // Enable data label
+                  color: Colors.green,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
                 LineSeries<SalesData, String>(
-                  name: "Retur",
+                  name: "Return",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.retur,
                   // Enable data label
+                  color: Colors.blue,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
               ],
@@ -463,8 +473,8 @@ class _HalPimpinanLaporanSparepartState
           return Container(
             padding: EdgeInsets.only(
               top: mediaQueryData.size.height * 0.01,
-              left: mediaQueryData.size.height * 0.01,
-              right: mediaQueryData.size.height * 0.01,
+              // left: mediaQueryData.size.height * 0.01,
+              // right: mediaQueryData.size.height * 0.01,
             ),
             child: Container(
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -523,15 +533,15 @@ class _HalPimpinanLaporanSparepartState
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.only(
-                                top: mediaQueryData.size.height * 0.005,
+                                top: mediaQueryData.size.height * 0.003,
                                 left: mediaQueryData.size.height * 0.005,
                                 right: mediaQueryData.size.height * 0.005,
-                                bottom: mediaQueryData.size.height * 0.005,
+                                bottom: mediaQueryData.size.height * 0.003,
                               ),
-                              decoration: BoxDecoration(
-                                color: Colors.green[600],
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(5.0)),
+                              decoration: const BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(1.0)),
                               ),
                               child: Row(
                                 children: [
@@ -844,7 +854,7 @@ class _HalPimpinanLaporanSparepartState
                             ? const Text(
                                 "0",
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orange,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -852,7 +862,7 @@ class _HalPimpinanLaporanSparepartState
                             : Text(
                                 "$barangmasuk",
                                 style: const TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orange,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -860,14 +870,14 @@ class _HalPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangmasuk == null
                             ? const Text(
-                                'Masuk',
+                                'Barang\nMasuk',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Masuk',
+                                'Barang\nMasuk',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -881,7 +891,7 @@ class _HalPimpinanLaporanSparepartState
                             ? const Text(
                                 "0",
                                 style: TextStyle(
-                                  color: Colors.orange,
+                                  color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -889,7 +899,7 @@ class _HalPimpinanLaporanSparepartState
                             : Text(
                                 "$barangkeluar",
                                 style: const TextStyle(
-                                  color: Colors.orange,
+                                  color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -897,14 +907,14 @@ class _HalPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangkeluar == null
                             ? const Text(
-                                'Keluar',
+                                'Barang\nKeluar',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Keluar',
+                                'Barang\nKeluar',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -918,7 +928,7 @@ class _HalPimpinanLaporanSparepartState
                             ? const Text(
                                 "0",
                                 style: TextStyle(
-                                  color: Colors.green,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -926,7 +936,7 @@ class _HalPimpinanLaporanSparepartState
                             : Text(
                                 "$barangreturn",
                                 style: const TextStyle(
-                                  color: Colors.green,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 25.0,
                                 ),
@@ -934,14 +944,14 @@ class _HalPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangreturn == null
                             ? const Text(
-                                'Return',
+                                'Barang\nReturn',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Return',
+                                'Barang\nReturn',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,

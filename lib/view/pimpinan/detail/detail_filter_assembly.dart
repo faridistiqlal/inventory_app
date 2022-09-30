@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
+import 'package:inventory_app/style/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -172,6 +173,7 @@ class _FilterPimpinanLaporanAssemblyState
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Assembly',
           style: GoogleFonts.lato(
@@ -227,7 +229,7 @@ class _FilterPimpinanLaporanAssemblyState
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
           ),
@@ -330,7 +332,7 @@ class _FilterPimpinanLaporanAssemblyState
                   height: mediaQueryData.size.height * 0.02,
                 ),
                 Text(
-                  "Tidak ada Sparepart",
+                  "Tidak ada Data",
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.grey[300],

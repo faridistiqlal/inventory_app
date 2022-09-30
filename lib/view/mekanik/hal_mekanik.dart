@@ -33,6 +33,7 @@ class _HalMekanikState extends State<HalMekanik> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: bgMekanik,
           title: Text(
             'Mekanik',
             style: GoogleFonts.lato(
@@ -95,11 +96,12 @@ class _HalMekanikState extends State<HalMekanik> {
             child: ListView(
               children: <Widget>[
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       children: [
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
@@ -184,7 +186,7 @@ class _HalMekanikState extends State<HalMekanik> {
                           ),
                         ),
                         SizedBox(
-                          width: mediaQueryData.size.width * 0.475,
+                          width: mediaQueryData.size.width * 0.47,
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),

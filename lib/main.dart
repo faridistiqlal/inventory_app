@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_app/tab/tab_admin.dart';
+import 'package:inventory_app/view/admin/detail/detail_image.dart';
 import 'package:inventory_app/view/admin/detail/detail_sparepart.dart';
 import 'package:inventory_app/view/admin/hal_admin.dart';
 import 'package:inventory_app/view/admin/hal_profile_admin.dart';
@@ -59,6 +60,11 @@ void main() {
       '/HalProfilAdmin': (BuildContext context) => const HalProfilAdmin(),
       '/HalSparepart': (BuildContext context) => const HalSparepart(),
       '/HalMekanik': (BuildContext context) => const HalMekanik(),
+      '/DetailGaleri': (BuildContext context) => const DetailGaleri(
+            dDesa: '',
+            dGambar: '',
+            dJudul: '',
+          ),
       '/DetailListSparepart': (BuildContext context) =>
           const DetailListSparepart(
             dKode: '',

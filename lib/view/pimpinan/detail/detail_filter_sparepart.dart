@@ -10,6 +10,8 @@ import 'package:inventory_app/service/service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../style/style.dart';
+
 class FilterPimpinanLaporanSparepart extends StatefulWidget {
   final String dTglAwal, dTglAkhir, dStatus;
   const FilterPimpinanLaporanSparepart({
@@ -26,9 +28,9 @@ class FilterPimpinanLaporanSparepart extends StatefulWidget {
 
 class _FilterPimpinanLaporanSparepartState
     extends State<FilterPimpinanLaporanSparepart> {
-  int? barangmasuk;
-  int? barangkeluar;
-  int? barangreturn;
+  String? barangmasuk;
+  String? barangkeluar;
+  String? barangreturn;
   List<SalesData> chartData = [];
   List? laporansparepartJSON;
   late TooltipBehavior _tooltipBehavior;
@@ -87,7 +89,7 @@ class _FilterPimpinanLaporanSparepartState
     setState(() {
       isloading = true;
     });
-    String theUrl = getMyUrl.url + 'prosses/laporanbydate';
+    String theUrl = getMyUrl.url + 'prosses/laporantotalsparepart';
     final res = await http.post(Uri.parse(theUrl), headers: {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
@@ -126,7 +128,7 @@ class _FilterPimpinanLaporanSparepartState
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporansperpart";
+        "https://dwianugrahsentosa.phdcorp.id/api/prosses/grafiklaporansperpart";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -169,6 +171,7 @@ class _FilterPimpinanLaporanSparepartState
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Sparepart',
           style: GoogleFonts.lato(
@@ -224,7 +227,7 @@ class _FilterPimpinanLaporanSparepartState
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
           ),
@@ -289,6 +292,7 @@ class _FilterPimpinanLaporanSparepartState
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.masuk,
                   // Enable data label
+                  color: Colors.orange,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
                 LineSeries<SalesData, String>(
@@ -297,14 +301,16 @@ class _FilterPimpinanLaporanSparepartState
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.keluar,
                   // Enable data label
+                  color: Colors.green,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
                 LineSeries<SalesData, String>(
-                  name: "Retur",
+                  name: "Return",
                   dataSource: chartData,
                   xValueMapper: (SalesData sales, _) => sales.tanggal,
                   yValueMapper: (SalesData sales, _) => sales.retur,
                   // Enable data label
+                  color: Colors.blue,
                   dataLabelSettings: const DataLabelSettings(isVisible: true),
                 ),
               ],
@@ -847,14 +853,14 @@ class _FilterPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangmasuk == null
                             ? const Text(
-                                'Masuk',
+                                'Total\nMasuk',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Masuk',
+                                'Total\nMasuk',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -884,14 +890,14 @@ class _FilterPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangkeluar == null
                             ? const Text(
-                                'Keluar',
+                                'Barang\nKeluar',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Keluar',
+                                'Barang\nKeluar',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -921,14 +927,14 @@ class _FilterPimpinanLaporanSparepartState
                         const SizedBox(width: 8.0),
                         barangreturn == null
                             ? const Text(
-                                'Return',
+                                'Barang\nReturn',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Return',
+                                'Barang\nReturn',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,

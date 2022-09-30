@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventory_app/service/service.dart';
 import 'package:inventory_app/style/style.dart';
+import 'package:inventory_app/view/admin/detail/detail_image.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -112,7 +113,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 5),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -144,9 +145,9 @@ class _DetailSparepartState extends State<DetailSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
         cStock.clear();
         cKeterangan.clear();
         await Future.delayed(
@@ -163,7 +164,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -195,9 +196,9 @@ class _DetailSparepartState extends State<DetailSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
       }
       if (kDebugMode) {
         print("pos stock");
@@ -237,7 +238,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 5),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -269,9 +270,9 @@ class _DetailSparepartState extends State<DetailSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
         cStock.clear();
         cKeterangan.clear();
         await Future.delayed(
@@ -288,7 +289,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -320,9 +321,9 @@ class _DetailSparepartState extends State<DetailSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
       }
       if (kDebugMode) {
         print("pos stock");
@@ -365,7 +366,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             ),
             title: const Text(
               // nama.toString(),
-              'Detail sparepart',
+              'Detail Sparepart',
               style: TextStyle(
                 color: titleText,
               ),
@@ -405,124 +406,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
                             Stack(
                               children: <Widget>[
                                 wHeader(),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    left: mediaQueryData.size.height * 0.01,
-                                    top: mediaQueryData.size.height * 0.3,
-                                    // bottom: mediaQueryData.size.height * 0.01,
-                                    right: mediaQueryData.size.height * 0.01,
-                                  ),
-                                  child: Card(
-                                    elevation: 1,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.all(
-                                          mediaQueryData.size.height * 0.01),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Chip(
-                                                avatar: const CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.gear,
-                                                    color: Colors.blue,
-                                                    size: 10,
-                                                  ),
-                                                ),
-                                                backgroundColor:
-                                                    Colors.blue[800],
-                                                label: Text(
-                                                  nama.toString(),
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Chip(
-                                            avatar: const CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              child: FaIcon(
-                                                FontAwesomeIcons.barcode,
-                                                color: primaryColor,
-                                                size: 10,
-                                              ),
-                                            ),
-                                            backgroundColor: primaryColor,
-                                            label: Text(
-                                              kode.toString(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12.0,
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Chip(
-                                                avatar: const CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.boxArchive,
-                                                    color: Colors.green,
-                                                    size: 10,
-                                                  ),
-                                                ),
-                                                backgroundColor: Colors.green,
-                                                label: Text(
-                                                  "Stock : " + stok.toString(),
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12.0,
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: mediaQueryData
-                                                            .size.height *
-                                                        0.01),
-                                              ),
-                                              Chip(
-                                                avatar: const CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons
-                                                        .arrowRotateRight,
-                                                    color: Colors.grey,
-                                                    size: 10,
-                                                  ),
-                                                ),
-                                                backgroundColor: Colors.grey,
-                                                label: Text(
-                                                  "Retur : " + retur.toString(),
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                _infosparepartcard(),
                               ],
                             ),
                           ],
@@ -563,6 +447,261 @@ class _DetailSparepartState extends State<DetailSparepart> {
     );
   }
 
+  Widget _infosparepartcard() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return Container(
+      padding: EdgeInsets.only(
+        left: mediaQueryData.size.height * 0.01,
+        top: mediaQueryData.size.height * 0.25,
+        // bottom: mediaQueryData.size.height * 0.01,
+        right: mediaQueryData.size.height * 0.01,
+      ),
+      child: Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: mediaQueryData.size.height * 0.05,
+              padding: EdgeInsets.only(
+                left: mediaQueryData.size.height * 0.02,
+                right: mediaQueryData.size.height * 0.01,
+                // bottom: mediaQueryData.size.height * 0.01,
+                // top: mediaQueryData.size.height * 0.02,
+              ),
+              decoration: const BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      nama.toString(),
+                      style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const FaIcon(
+                    FontAwesomeIcons.gear,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Chip(
+            //       avatar: const CircleAvatar(
+            //         backgroundColor: Colors.white,
+            //         child: FaIcon(
+            //           FontAwesomeIcons.gear,
+            //           color: Colors.blue,
+            //           size: 10,
+            //         ),
+            //       ),
+            //       backgroundColor: Colors.blue[800],
+            //       label: Text(
+            //         nama.toString(),
+            //         style: const TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 12.0,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: FaIcon(
+                            FontAwesomeIcons.barcode,
+                            color: primaryColor,
+                            size: 15,
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          "Kode :",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        kode.toString(),
+                        style: const TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.grey[300],
+                    height: 0,
+                    indent: 0,
+                    // thickness: 1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: FaIcon(
+                            FontAwesomeIcons.boxArchive,
+                            color: Colors.green,
+                            size: 15,
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          "Stock :",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        stok.toString(),
+                        style: const TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.grey[300],
+                    height: 0,
+                    indent: 0,
+                    // thickness: 1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Chip(
+                        avatar: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: FaIcon(
+                            FontAwesomeIcons.arrowRotateRight,
+                            color: Colors.grey,
+                            size: 15,
+                          ),
+                        ),
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          "Retur :",
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Text(
+                        retur.toString(),
+                        style: const TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Chip(
+            //   avatar: const CircleAvatar(
+            //     backgroundColor: Colors.white,
+            //     child: FaIcon(
+            //       FontAwesomeIcons.barcode,
+            //       color: primaryColor,
+            //       size: 10,
+            //     ),
+            //   ),
+            //   backgroundColor: primaryColor,
+            //   label: Text(
+            //     kode.toString(),
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 12.0,
+            //     ),
+            //   ),
+            // ),
+            // Row(
+            //   children: [
+            //     Chip(
+            //       avatar: const CircleAvatar(
+            //         backgroundColor: Colors.white,
+            //         child: FaIcon(
+            //           FontAwesomeIcons.boxArchive,
+            //           color: Colors.green,
+            //           size: 10,
+            //         ),
+            //       ),
+            //       backgroundColor: Colors.green,
+            //       label: Text(
+            //         "Stock : " + stok.toString(),
+            //         style: const TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 12.0,
+            //         ),
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding:
+            //           EdgeInsets.only(left: mediaQueryData.size.height * 0.01),
+            //     ),
+            //     Chip(
+            //       avatar: const CircleAvatar(
+            //         backgroundColor: Colors.white,
+            //         child: FaIcon(
+            //           FontAwesomeIcons.arrowRotateRight,
+            //           color: Colors.grey,
+            //           size: 10,
+            //         ),
+            //       ),
+            //       backgroundColor: Colors.grey,
+            //       label: Text(
+            //         "Retur : " + retur.toString(),
+            //         style: const TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 12.0,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _inputStockButton() {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return SizedBox(
@@ -587,7 +726,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
           //   print(cStock.text);
           // }
           if (cStock.text.isEmpty || cStock.text == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -617,11 +756,11 @@ class _DetailSparepartState extends State<DetailSparepart> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState!.showSnackBar(snackBar);
+            // scaffoldKey.currentState!.showSnackBar(snackBar);
           } else if (cKeterangan.text.isEmpty || cKeterangan.text == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -651,15 +790,15 @@ class _DetailSparepartState extends State<DetailSparepart> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState!.showSnackBar(snackBar);
+            // scaffoldKey.currentState!.showSnackBar(snackBar);
           } else {
             posStock();
           }
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.blue,
+          backgroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -702,7 +841,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             );
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.grey,
+            backgroundColor: Colors.grey,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -724,7 +863,7 @@ class _DetailSparepartState extends State<DetailSparepart> {
             posReturStock().then((value) => getSparepart());
           },
           style: ElevatedButton.styleFrom(
-            primary: Colors.red,
+            backgroundColor: Colors.red,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -808,22 +947,36 @@ class _DetailSparepartState extends State<DetailSparepart> {
     return ClipPath(
       // clipper: ArcClipper(),
       child: foto != ''
-          ? CachedNetworkImage(
-              imageUrl: foto,
-              // new NetworkImage(databerita[index]["kabar_gambar"]),
-              placeholder: (context, url) => Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      "assets/logo/22.png",
+          ? GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailGaleri(
+                      dGambar: foto,
+                      dDesa: kode,
+                      dJudul: nama,
                     ),
-                    fit: BoxFit.cover,
+                  ),
+                );
+              },
+              child: CachedNetworkImage(
+                imageUrl: foto,
+                // new NetworkImage(databerita[index]["kabar_gambar"]),
+                placeholder: (context, url) => Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        "assets/logo/22.png",
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
+                width: mediaQueryData.size.width,
+                height: mediaQueryData.size.height * 0.35,
+                fit: BoxFit.fill,
               ),
-              width: mediaQueryData.size.width,
-              height: mediaQueryData.size.height * 0.35,
-              fit: BoxFit.fitWidth,
             )
           : Image.asset(
               'assets/logo/22.png',

@@ -175,7 +175,7 @@ class HeaderMekanik extends StatelessWidget {
           width: mediaQueryData.size.width,
           height: mediaQueryData.size.height * 0.4,
           decoration: const BoxDecoration(
-            color: primaryColor,
+            color: bgMekanik,
           ),
         ),
         // ),
@@ -185,11 +185,9 @@ class HeaderMekanik extends StatelessWidget {
             horizontal: defaultPadding * 2,
           ),
           child: Text(
-            "Request\nSparepart",
+            "Dashboard\nSparepart",
             style: Theme.of(context).textTheme.headline5?.copyWith(
-                // color: ,
-                fontWeight: FontWeight.w700,
-                fontSize: 30),
+                color: bgCOlor, fontWeight: FontWeight.w700, fontSize: 30),
           ),
         ),
         Positioned(
@@ -222,7 +220,7 @@ class HeaderInputSparepart extends StatelessWidget {
           width: mediaQueryData.size.width,
           height: mediaQueryData.size.height * 0.4,
           decoration: const BoxDecoration(
-            color: primaryColor,
+            color: bgMekanik,
           ),
         ),
         // ),
@@ -234,9 +232,7 @@ class HeaderInputSparepart extends StatelessWidget {
           child: Text(
             "Input\nSparepart",
             style: Theme.of(context).textTheme.headline5?.copyWith(
-                // color: ,
-                fontWeight: FontWeight.w700,
-                fontSize: 30),
+                color: bgCOlor, fontWeight: FontWeight.w700, fontSize: 30),
           ),
         ),
         Positioned(
@@ -268,8 +264,8 @@ class HeaderPemimpin extends StatelessWidget {
         Container(
           width: mediaQueryData.size.width,
           height: mediaQueryData.size.height * 0.4,
-          decoration: const BoxDecoration(
-            color: primaryColor,
+          decoration: BoxDecoration(
+            color: Colors.red[400],
           ),
         ),
         // ),
@@ -279,11 +275,9 @@ class HeaderPemimpin extends StatelessWidget {
             horizontal: defaultPadding * 2,
           ),
           child: Text(
-            "List\nSparepart",
+            "Dashboard\nInventory",
             style: Theme.of(context).textTheme.headline5?.copyWith(
-                // color: ,
-                fontWeight: FontWeight.w700,
-                fontSize: 30),
+                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 30),
           ),
         ),
         Positioned(

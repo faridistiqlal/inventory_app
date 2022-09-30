@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:inventory_app/service/service.dart';
+import 'package:inventory_app/style/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -25,9 +26,9 @@ class FilterPimpinanLaporanRequest extends StatefulWidget {
 
 class _FilterPimpinanLaporanRequestState
     extends State<FilterPimpinanLaporanRequest> {
-  int? reqproses;
-  int? reqselesai;
-  int? reqtotal;
+  String? total;
+  String? proses;
+  String? selesai;
   List<SalesData> chartData = [];
   List? laporanrequestJSON;
   late TooltipBehavior _tooltipBehavior;
@@ -98,9 +99,9 @@ class _FilterPimpinanLaporanRequestState
     if (mounted) {
       setState(
         () {
-          reqproses = laporanbydateJSON['reqproses'];
-          reqselesai = laporanbydateJSON['reqselesai'];
-          reqtotal = laporanbydateJSON['reqtotal'];
+          total = laporanbydateJSON['total'];
+          proses = laporanbydateJSON['proses'];
+          selesai = laporanbydateJSON['selesai'];
         },
       );
       setState(() {
@@ -125,7 +126,7 @@ class _FilterPimpinanLaporanRequestState
 
   Future<String> getJsonFromFirebase() async {
     String url =
-        "http://inventory.akses-yt.id/api/prosses/grafiklaporanrequest";
+        "https://dwianugrahsentosa.phdcorp.id/api/prosses/grafiklaporanrequest";
     http.Response response = await http.post(
       Uri.parse(url),
       headers: {
@@ -168,6 +169,7 @@ class _FilterPimpinanLaporanRequestState
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Laporan Request',
           style: GoogleFonts.lato(
@@ -223,7 +225,7 @@ class _FilterPimpinanLaporanRequestState
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -337,7 +339,7 @@ class _FilterPimpinanLaporanRequestState
         } else {
           // ignore: prefer_typing_uninitialized_variables
           var status;
-          if (laporanrequestJSON?[i]["status"] == "Selesai") {
+          if (laporanrequestJSON?[i]["aksi"] == "0") {
             status = Material(
               borderRadius: BorderRadius.circular(5.0),
               color: Colors.green[800],
@@ -358,9 +360,9 @@ class _FilterPimpinanLaporanRequestState
                       // Navigator.pushNamed(context, '/DetailSurat');
                     },
                   ),
-                  Text(
-                    laporanrequestJSON?[i]["status"],
-                    style: const TextStyle(
+                  const Text(
+                    "Selesai",
+                    style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
                     ),
@@ -387,9 +389,9 @@ class _FilterPimpinanLaporanRequestState
                     iconSize: 50.0,
                     onPressed: () {},
                   ),
-                  Text(
-                    laporanrequestJSON?[i]["status"],
-                    style: const TextStyle(
+                  const Text(
+                    "Progress",
+                    style: TextStyle(
                       fontSize: 12.0,
                       color: Colors.white,
                     ),
@@ -426,7 +428,7 @@ class _FilterPimpinanLaporanRequestState
                     children: <Widget>[
                       SizedBox(
                           width: mediaQueryData.size.height * 0.12,
-                          height: mediaQueryData.size.height * 0.15,
+                          height: mediaQueryData.size.height * 0.12,
                           child: status),
                       SizedBox(
                         width: mediaQueryData.size.width * 0.02,
@@ -472,7 +474,7 @@ class _FilterPimpinanLaporanRequestState
                               margin:
                                   const EdgeInsets.only(top: 5.0, bottom: 5.0),
                               child: Text(
-                                laporanrequestJSON?[i]["sperpart"],
+                                laporanrequestJSON?[i]["keterangan"],
                                 style: const TextStyle(
                                   fontSize: 13.0,
                                   color: Colors.black,
@@ -480,34 +482,32 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 5.0),
-                              child: laporanrequestJSON?[i]["mesin"] != null
-                                  ? Text(
-                                      'Mesin : ' +
-                                          laporanrequestJSON?[i]["mesin"],
-                                      style: const TextStyle(
-                                        fontSize: 13.0,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )
-                                  : const Text(
-                                      '-',
-                                      style: TextStyle(
-                                        fontSize: 13.0,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                            ),
+                            // Container(
+                            //   margin: const EdgeInsets.only(bottom: 5.0),
+                            //   child: laporanrequestJSON?[i]["mesin"] != null
+                            //       ? Text(
+                            //           'Mesin : ' +
+                            //               laporanrequestJSON?[i]["mesin"],
+                            //           style: const TextStyle(
+                            //             fontSize: 13.0,
+                            //             color: Colors.green,
+                            //             fontWeight: FontWeight.bold,
+                            //           ),
+                            //         )
+                            //       : const Text(
+                            //           '-',
+                            //           style: TextStyle(
+                            //             fontSize: 13.0,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ),
+                            // ),
                             Container(
                               margin: const EdgeInsets.only(bottom: 5.0),
                               child: laporanrequestJSON?[i]["tanggal"] != null
                                   ? Text(
                                       "Tanggal : " +
-                                          laporanrequestJSON?[i]["tanggal"] +
-                                          " " +
-                                          laporanrequestJSON?[i]["jam"],
+                                          laporanrequestJSON?[i]["tanggal"],
                                       style: const TextStyle(
                                         fontSize: 13.0,
                                         color: Colors.black,
@@ -521,56 +521,56 @@ class _FilterPimpinanLaporanRequestState
                                       ),
                                     ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 5.0),
-                                  child: laporanrequestJSON?[i]["jumlah"] !=
-                                          null
-                                      ? Text(
-                                          'Jumlah : ' +
-                                              laporanrequestJSON?[i]["jumlah"],
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.orange,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : const Text(
-                                          '-',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                      right: 5.0, bottom: 5.0),
-                                  child: laporanrequestJSON?[i]
-                                              ["kodesperpart"] !=
-                                          null
-                                      ? Text(
-                                          'Kode : ' +
-                                              laporanrequestJSON?[i]
-                                                  ["kodesperpart"],
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : const Text(
-                                          '-',
-                                          style: TextStyle(
-                                            fontSize: 13.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Container(
+                            //       margin: const EdgeInsets.only(bottom: 5.0),
+                            //       child: laporanrequestJSON?[i]["jumlah"] !=
+                            //               null
+                            //           ? Text(
+                            //               'Jumlah : ' +
+                            //                   laporanrequestJSON?[i]["jumlah"],
+                            //               style: const TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.orange,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             )
+                            //           : const Text(
+                            //               '-',
+                            //               style: TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //     ),
+                            //     Container(
+                            //       margin: const EdgeInsets.only(
+                            //           right: 5.0, bottom: 5.0),
+                            //       child: laporanrequestJSON?[i]
+                            //                   ["kodesperpart"] !=
+                            //               null
+                            //           ? Text(
+                            //               'Kode : ' +
+                            //                   laporanrequestJSON?[i]
+                            //                       ["kodesperpart"],
+                            //               style: const TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.blue,
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             )
+                            //           : const Text(
+                            //               '-',
+                            //               style: TextStyle(
+                            //                 fontSize: 13.0,
+                            //                 color: Colors.black,
+                            //               ),
+                            //             ),
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       )
@@ -763,7 +763,7 @@ class _FilterPimpinanLaporanRequestState
                   children: [
                     Column(
                       children: <Widget>[
-                        reqproses == null
+                        proses == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -773,7 +773,7 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               )
                             : Text(
-                                "$reqproses",
+                                "$proses",
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontWeight: FontWeight.bold,
@@ -781,9 +781,9 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        reqproses == null
+                        proses == null
                             ? const Text(
-                                'Proses',
+                                'Memuat..',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -800,7 +800,7 @@ class _FilterPimpinanLaporanRequestState
                     ),
                     Column(
                       children: <Widget>[
-                        reqselesai == null
+                        total == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -810,7 +810,7 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               )
                             : Text(
-                                "$reqselesai",
+                                "$total",
                                 style: const TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.bold,
@@ -818,16 +818,16 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        reqselesai == null
+                        total == null
                             ? const Text(
-                                'Selesai',
+                                'Memuat..',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Selesai',
+                                'Total',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -837,7 +837,7 @@ class _FilterPimpinanLaporanRequestState
                     ),
                     Column(
                       children: <Widget>[
-                        reqtotal == null
+                        selesai == null
                             ? const Text(
                                 "0",
                                 style: TextStyle(
@@ -847,7 +847,7 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               )
                             : Text(
-                                "$reqtotal",
+                                "$selesai",
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -855,16 +855,16 @@ class _FilterPimpinanLaporanRequestState
                                 ),
                               ),
                         const SizedBox(width: 8.0),
-                        reqtotal == null
+                        selesai == null
                             ? const Text(
-                                'Total',
+                                'Memuat..',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
                                 ),
                               )
                             : const Text(
-                                'Total',
+                                'Selesai',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,

@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
               }
             },
           );
-          SnackBar snackBar = SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 5),
             elevation: 6.0,
             // behavior: SnackBarBehavior.floating,
@@ -134,9 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                 }
               },
             ),
-          );
+          ));
           // ignore: deprecated_member_use
-          scaffoldKey.currentState?.showSnackBar(snackBar);
+          // scaffoldKey.currentState?.showSnackBar(snackBar);
         } else if (loginuser['Notif'] == 'Password salah') {
           SharedPreferences pref = await SharedPreferences.getInstance();
           pref.setBool("_sudahlogin", false);
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
               }
             },
           );
-          SnackBar snackBar = SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             duration: const Duration(seconds: 5),
             elevation: 6.0,
             content: Row(
@@ -179,9 +179,9 @@ class _LoginPageState extends State<LoginPage> {
                 }
               },
             ),
-          );
+          ));
           // ignore: deprecated_member_use
-          scaffoldKey.currentState?.showSnackBar(snackBar);
+          // scaffoldKey.currentState?.showSnackBar(snackBar);
         } else {
           if (loginuser['Notif'] == 'Login berhasil') {
             if (loginuser['Data']['Level'] == "1") {
@@ -421,14 +421,14 @@ class _LoginPageState extends State<LoginPage> {
       height: mediaQueryData.size.height * 0.07,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: Colors.amber,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // <-- Radius
           ),
         ),
         onPressed: () async {
           if (username.text.isEmpty || username.text == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -458,11 +458,11 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState?.showSnackBar(snackBar);
+            // scaffoldKey.currentState?.showSnackBar(snackBar);
           } else if (password.text.isEmpty || password.text == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -492,9 +492,9 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState?.showSnackBar(snackBar);
+            // scaffoldKey.currentState?.showSnackBar(snackBar);
           } else {
             _login();
           }

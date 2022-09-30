@@ -29,13 +29,18 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
   List? laporanbydateJSON;
   List? topkeluardateJSON;
   List? topmasukdateJSON;
+  List? topreturndateJSON;
   var isloading = false;
-  int? barangmasuk;
-  int? barangkeluar;
-  int? barangreturn;
-  int? reqproses;
-  int? reqselesai;
-  int? reqtotal;
+  // int? barangmasuk;
+  // int? barangkeluar;
+  // int? barangreturn;
+  // int? reqproses;
+  // int? reqselesai;
+  // int? reqtotal;
+  String? total;
+  String? bulanini;
+  String? proses;
+  String? selesai;
 // ignore: unused_field
   bool _isLoggedIn = false;
 
@@ -49,19 +54,23 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
       "name": "invent",
       "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
     }, body: {
-      "tanggalawal": 'all',
-      "tanggalakhir": 'all',
+      "tanggalawal": '',
+      "tanggalakhir": '',
     });
     var laporanbydateJSON = json.decode(res.body);
     if (res.statusCode == 200) {
       setState(
         () {
-          barangmasuk = laporanbydateJSON['barangmasuk'];
-          barangkeluar = laporanbydateJSON['barangkeluar'];
-          barangreturn = laporanbydateJSON['barangreturn'];
-          reqproses = laporanbydateJSON['reqproses'];
-          reqselesai = laporanbydateJSON['reqselesai'];
-          reqtotal = laporanbydateJSON['reqtotal'];
+          total = laporanbydateJSON['total'];
+          bulanini = laporanbydateJSON['bulanini'];
+          proses = laporanbydateJSON['proses'];
+          selesai = laporanbydateJSON['selesai'];
+          // barangmasuk = laporanbydateJSON['barangmasuk'];
+          // barangkeluar = laporanbydateJSON['barangkeluar'];
+          // barangreturn = laporanbydateJSON['barangreturn'];
+          // reqproses = laporanbydateJSON['reqproses'];
+          // reqselesai = laporanbydateJSON['reqselesai'];
+          // reqtotal = laporanbydateJSON['reqtotal'];
         },
       );
       setState(() {
@@ -156,6 +165,34 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     }
   }
 
+  Future<dynamic> topsparepartreturn() async {
+    setState(() {
+      isloading = true;
+    });
+    String theUrl = getMyUrl.url + 'prosses/topbarang';
+    final res = await http.post(Uri.parse(theUrl), headers: {
+      "name": "invent",
+      "key": "THplZ0lQcGh1N0FKN2FWdlgzY21FQT09",
+    }, body: {
+      "arus": "3"
+    });
+    if (res.statusCode == 200) {
+      setState(
+        () {
+          topreturndateJSON = json.decode(res.body);
+        },
+      );
+      setState(() {
+        isloading = false;
+      });
+    }
+    if (kDebugMode) {
+      print("-----------RETURN--------------");
+      print(topreturndateJSON);
+      print("-----------RETURN--------------");
+    }
+  }
+
 //NOTE Cek Logout
   Future _cekLogout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -173,6 +210,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     getSparepart();
     topsparepartkeluar();
     topsparepartmasuk();
+    topsparepartreturn();
     laporanbyDate();
     super.initState();
   }
@@ -183,6 +221,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: bgPimpinan,
         title: Text(
           'Pimpinan',
           style: GoogleFonts.lato(
@@ -231,6 +270,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                   ),
                   _topsparepartmasuk(),
                   _topsparepartkeluar(),
+                  _topsparepartreturn(),
                 ],
               ),
             ),
@@ -456,9 +496,9 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
 
   Widget logoutbutton() {
     return IconButton(
-      icon: Icon(
+      icon: const Icon(
         Icons.logout,
-        color: Colors.brown[800],
+        color: Colors.white,
       ),
       onPressed: () {
         Dialogs.materialDialog(
@@ -500,7 +540,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
     return isloading
         ? _buildProgressIndicator()
         : Container(
-            height: mediaQueryData.size.height * 0.12,
+            height: mediaQueryData.size.height * 0.1,
             width: mediaQueryData.size.width,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -534,7 +574,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           Column(
                             children: <Widget>[
                               Text(
-                                "$barangmasuk",
+                                "$total",
                                 style: const TextStyle(
                                   color: Colors.blue,
                                   fontWeight: FontWeight.bold,
@@ -543,7 +583,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                               ),
                               const SizedBox(width: 8.0),
                               const Text(
-                                'Barang\nMasuk',
+                                'Total',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -554,7 +594,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           Column(
                             children: <Widget>[
                               Text(
-                                "$barangkeluar",
+                                "$bulanini",
                                 style: const TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.bold,
@@ -563,7 +603,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                               ),
                               const SizedBox(width: 8.0),
                               const Text(
-                                'Barang\nKeluar',
+                                'Bulan ini',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -574,7 +614,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           Column(
                             children: <Widget>[
                               Text(
-                                "$barangreturn",
+                                "$proses",
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -583,7 +623,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                               ),
                               const SizedBox(width: 8.0),
                               const Text(
-                                'Barang\nReturn',
+                                'Proses',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -594,7 +634,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                           Column(
                             children: <Widget>[
                               Text(
-                                "$reqproses",
+                                "$selesai",
                                 style: const TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
@@ -603,7 +643,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                               ),
                               const SizedBox(width: 8.0),
                               const Text(
-                                'Request\nProses',
+                                'Selesai',
                                 style: TextStyle(
                                   color: Color(0xFF2e2e2e),
                                   fontSize: 13.0,
@@ -642,7 +682,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.grey,
                     ),
-                    height: mediaQueryData.size.height * 0.14,
+                    height: mediaQueryData.size.height * 0.1,
                     width: mediaQueryData.size.width,
                     // color: Colors.grey,
                   ),
@@ -816,6 +856,108 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     ),
                   ),
                   topsparepartlistkeluar(),
+                  const SizedBox(),
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      bottom: mediaQueryData.size.height * 0.01,
+                      top: mediaQueryData.size.height * 0.01,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: <Widget>[
+                          const Icon(
+                            Icons.info_outline,
+                            size: 12,
+                            color: Colors.black,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: mediaQueryData.size.height * 0.005),
+                          ),
+                          const Text(
+                            'Data Sparepart',
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ]),
+                        Text(
+                          formatedTanggal.toString(),
+                          style: const TextStyle(
+                            fontSize: 10,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+  }
+
+  Widget _topsparepartreturn() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return _isLoggedIn
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            padding: EdgeInsets.only(
+              // left: mediaQueryData.size.height * 0.005,
+              // right: mediaQueryData.size.height * 0.005,
+              // bottom: mediaQueryData.size.height * 0.01,
+              top: mediaQueryData.size.height * 0.01,
+            ),
+            child: Card(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: mediaQueryData.size.height * 0.05,
+                    padding: EdgeInsets.only(
+                      left: mediaQueryData.size.height * 0.02,
+                      right: mediaQueryData.size.height * 0.01,
+                      // bottom: mediaQueryData.size.height * 0.01,
+                      // top: mediaQueryData.size.height * 0.02,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        topRight: Radius.circular(10.0),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text(
+                          "Top Sparepart Return",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.open_in_new),
+                        //   color: Colors.white,
+                        //   iconSize: 25.0,
+                        //   onPressed: () {
+                        //     Navigator.pushNamed(context, '/DetailKesehatan');
+                        //   },
+                        // ),
+                      ],
+                    ),
+                  ),
+                  topsparepartlistreturn(),
                   const SizedBox(),
                   Container(
                     padding: EdgeInsets.only(
@@ -1258,7 +1400,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                             margin: const EdgeInsets.only(right: 15.0),
                             width: mediaQueryData.size.height * 0.15,
                             height: mediaQueryData.size.height * 0.11,
-                            child: topmasukdateJSON?[i]['foto'] != null
+                            child: topkeluardateJSON?[i]['foto'] != null
                                 ? CachedNetworkImage(
                                     imageUrl: topkeluardateJSON?[i]['foto'],
                                     placeholder: (context, url) => Container(
@@ -1286,7 +1428,7 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                               children: <Widget>[
                                 Container(
                                   margin: const EdgeInsets.only(
-                                      top: 5.0, bottom: 10.0),
+                                      top: 1.0, bottom: 10.0),
                                   child: Text(
                                     topkeluardateJSON?[i]['sperpart'],
                                     style: const TextStyle(
@@ -1327,7 +1469,247 @@ class _HalMesinMekanikState extends State<HalMesinMekanik> {
                     ),
                   ),
                 ),
-                const Divider()
+                // const Divider(
+                //   height: 1,
+                // )
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget topsparepartlistreturn() {
+    MediaQueryData mediaQueryData = MediaQuery.of(context);
+    return ListView.builder(
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: topreturndateJSON == null ? 0 : topreturndateJSON?.length,
+      itemBuilder: (BuildContext context, int i) {
+        if (topreturndateJSON?[i]["id"] == "NotFound") {
+          return Center(
+            child: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.notes_sharp,
+                  size: 150,
+                  color: Colors.grey[300],
+                ),
+                Text(
+                  "Tidak ada Sparepart",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.grey[300],
+                  ),
+                )
+              ],
+            ),
+          );
+        } else {
+          // ignore: prefer_typing_uninitialized_variables
+          var arus;
+          if (topreturndateJSON?[i]["arus"] == '1') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.inbox,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Masuk",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else if (topreturndateJSON?[i]["arus"] == '2') {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.orange,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.outbox_rounded,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Keluar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            arus = Container(
+              width: mediaQueryData.size.height * 0.1,
+              // margin: const EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(
+                top: mediaQueryData.size.height * 0.005,
+                left: mediaQueryData.size.height * 0.005,
+                right: mediaQueryData.size.height * 0.005,
+                bottom: mediaQueryData.size.height * 0.005,
+              ),
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              // margin: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.settings_backup_restore_sharp,
+                    color: Colors.white,
+                    size: 14,
+                  ),
+                  SizedBox(
+                    width: mediaQueryData.size.height * 0.01,
+                  ),
+                  const Text(
+                    "Return",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container(
+            padding: EdgeInsets.only(
+              top: mediaQueryData.size.height * 0.01,
+              left: mediaQueryData.size.height * 0.01,
+              right: mediaQueryData.size.height * 0.01,
+              bottom: mediaQueryData.size.height * 0.005,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  // elevation: 1.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                  ),
+                  child: Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.only(right: 15.0),
+                            width: mediaQueryData.size.height * 0.15,
+                            height: mediaQueryData.size.height * 0.11,
+                            child: topreturndateJSON?[i]['foto'] != null
+                                ? CachedNetworkImage(
+                                    imageUrl: topreturndateJSON?[i]['foto'],
+                                    placeholder: (context, url) => Container(
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                          image: AssetImage(
+                                            "assets/logo/22.png",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    fit: BoxFit.cover,
+                                    height: 150.0,
+                                    width: 110.0,
+                                  )
+                                : Image.asset(
+                                    'assets/logo/22.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      top: 1.0, bottom: 10.0),
+                                  child: Text(
+                                    topreturndateJSON?[i]['sperpart'],
+                                    style: const TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      //fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                arus,
+                                Container(
+                                  margin: const EdgeInsets.only(top: 5.0),
+                                  child: topreturndateJSON?[i]['jumlah'] != null
+                                      ? Text(
+                                          'Jumlah : ' +
+                                              topkeluardateJSON?[i]['jumlah'],
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            //fontWeight: FontWeight.normal,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '-',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // const Divider(
+                //   height: 1,
+                // )
               ],
             ),
           );

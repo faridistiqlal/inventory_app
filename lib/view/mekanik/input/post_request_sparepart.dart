@@ -128,7 +128,7 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 5),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -160,9 +160,9 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
         await Future.delayed(
           const Duration(seconds: 2),
           () {
@@ -175,7 +175,7 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
             isloadingpost = false;
           },
         );
-        SnackBar snackBar = SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           elevation: 6.0,
           behavior: SnackBarBehavior.floating,
@@ -207,9 +207,9 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
               }
             },
           ),
-        );
+        ));
         // ignore: deprecated_member_use
-        scaffoldKey.currentState!.showSnackBar(snackBar);
+        // scaffoldKey.currentState!.showSnackBar(snackBar);
       }
       if (kDebugMode) {
         print("pos sparepart");
@@ -234,6 +234,7 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
+          backgroundColor: bgMekanik,
           elevation: 0,
           title: Text(
             'Mekanik',
@@ -549,7 +550,7 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
           //   print(cKeterangan);
           // }
           if (cMesin!.isEmpty || cMesin! == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -579,11 +580,11 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState!.showSnackBar(snackBar);
+            // scaffoldKey.currentState!.showSnackBar(snackBar);
           } else if (cKeterangan.text.isEmpty || cKeterangan.text == '') {
-            SnackBar snackBar = SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 5),
               elevation: 6.0,
               content: Row(
@@ -613,9 +614,9 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
                   }
                 },
               ),
-            );
+            ));
             // ignore: deprecated_member_use
-            scaffoldKey.currentState!.showSnackBar(snackBar);
+            // scaffoldKey.currentState!.showSnackBar(snackBar);
           } else {
             postRequest();
           }
@@ -629,7 +630,7 @@ class _PostRequestSparepartState extends State<PostRequestSparepart> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: Colors.green,
+          backgroundColor: Colors.green,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),

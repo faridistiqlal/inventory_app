@@ -311,14 +311,14 @@ class _HalAdminState extends State<HalAdmin> {
                                               margin: const EdgeInsets.only(
                                                   bottom: 10.0),
                                               child: _foundUsers[index]
-                                                          ['nama_mesin'] !=
+                                                          ['subassembly'] !=
                                                       null
                                                   ? Text(
-                                                      'Mesin : ' +
-                                                          _foundUsers[index]
-                                                              ['nama_mesin'],
+                                                      // 'Subasembly : ' +
+                                                      _foundUsers[index]
+                                                          ['subassembly'],
                                                       style: const TextStyle(
-                                                        fontSize: 13.0,
+                                                        fontSize: 12.0,
                                                         color: Colors.black,
                                                         // fontWeight: FontWeight.bold,
                                                         //fontWeight: FontWeight.normal,
@@ -387,7 +387,7 @@ class _HalAdminState extends State<HalAdmin> {
                                     top: mediaQueryData.size.height * 0.02),
                               ),
                               Text(
-                                "Tidak ada hasil",
+                                "Sparepart",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   color: Colors.grey[300],
