@@ -86,6 +86,10 @@ class _HalUsersAdminState extends State<HalUsersAdmin> {
             (user) => user["nama"].toLowerCase().contains(
                   enteredKeyword.toLowerCase(),
                 ),
+
+            // || user["nama"].toLowerCase().contains(
+            //   enteredKeyword.toLowerCase(),
+            // ),
           )
           .toList();
       // we use the toLowerCase() method to make it case-insensitive
